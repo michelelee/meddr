@@ -5,6 +5,17 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 
+class Drug(db.Model):
+    """Drug info from openFDA"""
+
+    __tablename__="drugs"
+
+    drug_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    spl_id = db.Column(db.String(64), nullable=False)
+    brand_name = db.Column(db.String(200), nullable=False)
+    ndc = db.Column(db.String(20), nullable=False)
+
+
 class User(db.Model):
     """User of memed website."""
 
@@ -22,7 +33,7 @@ class User(db.Model):
         return "<User user_id=%s email=%s>" % (self.user_id, self.email)
 
 
-class Rating(db.Model):
+class drugRating(db.Model):
     """Rating of a drug by a user."""
 
     __tablename__ = "ratings"
@@ -31,7 +42,7 @@ class Rating(db.Model):
     drug_id = db.Column(db.Integer)
     user_id = db.Column(db.Integer)
     score = db.Column(db.Integer)
-    review = db.Column(db.String, nullable= False)
+    comments = db.Column(db.String, nullable= False)
 
     def __repr__(self):
         """Provide helpful representation when printed."""

@@ -40,17 +40,7 @@ def get_drug_mfg():
 
 
 
-	for drug in druglist:
-		brand = drug["brand_name"]
-		manufacturer = drug['manufacturer_name']
-		string = brand + ' by ' + manufacturer
-		brands_manufacturers.add(string)
 
-	print brands_manufacturers
-
-	print 'hello'
-
-	return brands_manufacturers
 
 
 
