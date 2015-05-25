@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+
+    <title>meddit</title>
+
+
+</head>
+<body>
+
+
+  {% for flash in get_flashed_messages() %}
+    {{ flash }}
+
+  {% endfor %}
+
+  {% block content %}
+      Put your body here.
+
+  {% endblock %}
+
+
+<!-- <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script> -->
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script> -->
+
+</body>
+</html>

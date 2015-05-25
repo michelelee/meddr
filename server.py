@@ -1,76 +1,58 @@
-# """Medme"""
+"""medme"""
 
-# from flask import flask
-
-# from model import connect_to_db, connect_to_db
-
-# app = Flask (__name__)
-
+# from jinja2 import StrictUndefined
+# import search_openFDA import seed_drugs seeds_drugs.variable name 
+from flask import Flask, render_template, request
+from search_openfda import search_openfda
 import requests
 
-# # jinja, render template
+ # session, redirect
 
-# @app.route("/")
-# def show_form():
+from model import connect_to_db, User, db
+# from search_openFDA import 
 
-# return render_template("blah form.html")
+app = Flask(__name__)
+app.secret_key = "ABC"
 
+# app.jinja_env.undefined = StrictUndefined
 
+@app.route("/")
+def index():
+	"""Homepage and search"""
 
-# @app.route("/", methods=["POST"])
-def get_drug_mfg():
+	return render_template("homepage.html")
 
-	brand_name = 'viagra'
-
-	# request.form.(name of field)
-
-	# payload = {'limit' : '100', 'brand_name' : '"viagra"'}
+@app.route("/drug_search_results", methods=['POST'])
+#if you land on /drug_seearch resutls from a post request, do this search 
+def search():
+	"""User inputs drug search here"""
 	
-	r = requests.get('https://api.fda.gov/drug/label.json?api_key=DWhqkP2B0GiId0OAuz15UIAvZharbqMrComhRBG1&search=brand_name:%s&limit=100' %brand_name)
+	keywords = request.form["drugname_keywords"]
 
-	# search=brand_name:&limit=300" %(userinput) 
+	alldrugresults, count = search_openfda(keywords)
 
 
-	alljson = r.json()
-
-	druglist = alljson['results']
-
-	brands_manufacturers = " "
+	return render_template("drug_search_results.html", alldrugresults = alldrugresults, count = count )
 
 
 
 
+# @app.route("/drug_results", methods=['POST'])
+# def get_results():
+# 	pass
 
 
+if __name__ == "__main__":
 
+    # We have to set debug=True here, since it has to be True at the point
+    # that we invoke the DebugToolbarExtension
 
+    # Do not debug for demo
+    app.debug = True
 
+    connect_to_db(app)
 
-
-
-# @app.route("/", methods=["POST"])
-# def get_indications():
-
-# 	brand_name = request.form.(name of field)
-
-# 	# payload = {'limit' : '100', 'brand_name' : '"viagra"'}
-
-
-
-# 	r = requests.get('https://api.fda.gov/drug/label.json?api_key=DWhqkP2B0GiId0OAuz15UIAvZharbqMrComhRBG1&search=brand_name:%s&limit=300' %brand_name)
-
-# 	# search=brand_name:&limit=300" %(userinput) 
-
-
-# 	results = r.json()
-
-# 	for indication in indications 
-# 		indications = results[0]['indications_and_usage'][0]
-
-# 	return render_template("blah.html",indications=indications)
-
-
-
-
-
-# print r.url	
+    # Use the DebugToolbar
+    # DebugToolbarExtension(app)
+#
+    app.run()

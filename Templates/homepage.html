@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+
+	<h1>Meddit Homepage</h1>
+
+
+	<h3>Search by Drugname</h3>
+
+	<form action="/drug_search_results" method="POST">
+
+	<label> 
+		Drug Search: 
+		<input type="text" name="drugname_keywords">
+	</label>
+  <input type="submit">
+
+	</form>
+
+
+{% endblock %}
