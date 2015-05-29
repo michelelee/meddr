@@ -14,7 +14,9 @@ class Drug(db.Model):
     spl_id = db.Column(db.String(64), nullable=False)
     brand_name = db.Column(db.String(200), nullable=False)
     ndc = db.Column(db.String(20), nullable=False)
-
+    indications_and_usage = db.Column(db.String(99999), nullable=False)
+    dosage_and_administration = db.Column(db.String(99999), nullable=False)
+    adverse_reactions = db.Column(db.String(99999), nullable=False)
 
 class User(db.Model):
     """User of memed website."""

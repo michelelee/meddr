@@ -29,17 +29,17 @@ def search():
 	
 	keywords = request.form["drugname_keywords"]
 
-	alldrugresults, count = search_openfda(keywords)
+	returned_drugs, brand, count = search_openfda(keywords)
 
 
-	return render_template("drug_search_results.html", alldrugresults = alldrugresults, count = count )
+	return render_template("drug_search_results.html", returned_drugs = returned_drugs,  brand = brand, count = count )
 
 
+@app.route("/drug_results", methods=['POST'])
+def get_results():
+	pass
 
 
-# @app.route("/drug_results", methods=['POST'])
-# def get_results():
-# 	pass
 
 
 if __name__ == "__main__":
@@ -54,5 +54,5 @@ if __name__ == "__main__":
 
     # Use the DebugToolbar
     # DebugToolbarExtension(app)
-#
-    app.run()
+
+    app.run(use_debugger=True, debug=app.debug)

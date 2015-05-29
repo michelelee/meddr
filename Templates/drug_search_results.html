@@ -8,7 +8,21 @@
 
 <p> Drug Matches: </p>
 
-<p> {{ alldrugresults }} </p>
+<!-- <p> {{ returned_drugs }} </p> -->
 
+
+{% for spl_id, drug in returned_drugs.iteritems() %}
+	<h3> {{ brand }} </h3>
+
+		{% for name, value in drug.iteritems() %}
+			<li> {{ name }} : {{ value }} </li>
+		{% endfor %}
+		<!-- {% for drug in returned_drugs[key] %}
+			<li>{{ returned_drugs[key]["manufacturer_name"] }}</li>
+		{% endfor %} -->
+		
+	
+
+{% endfor %}
 
 {% endblock %}

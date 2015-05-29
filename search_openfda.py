@@ -11,7 +11,6 @@ openfda_api_key = keys[0]
 
 
 def search_openfda(keywords):
-
 	api_key = openfda_api_key
 	
 	
@@ -25,29 +24,71 @@ def search_openfda(keywords):
  	returned_drugs = {}
 	
 	for drug in druglist:
+		# print drug
+		print "\n\n"
 		# print drug['openfda']['brand_name']
 		spl_id = drug['openfda']['spl_id'][0]
 
-		returned_drugs[spl_id] = {
-		# 'indications_and_usage' : drug['indications_and_usage'][0],
-		# requested_drug[key_indications] = indications_and_usage
+		brand = drug['openfda']['brand_name'][0]
+
+		returned_drugs[spl_id] = {}
+
+		descriptions = [
+			'indications_and_usage',
+			'how_supplied',
+		]
+
+		for x in descriptions:
+			if x in drug and drug[x].__len__() > 0:
+				returned_drugs[spl_id][x] = drug[x][0]
+
+		# if 'indications_and_usage' in drug and drug['indications_and_usage'].__len__() > 0:
+		# 	returned_drugs[spl_id]['indications_and_usage'] = drug['indications_and_usage'][0]
+	
 		# if 'how_supplied' in drug and drug['how_supplied'].count > 0:
-		# 'how_supplied' : drug['how_supplied'][0],
-		# 'dosage_and_administration' : drug['dosage_and_administration'][0],
-		# 'description' : drug['description'][0],
-		# adverse_reactions = drug['adverse_reactions'][0]
-		# general_precautions = drug['general_precautions'][0]
-		#requested_drug['spl_id']= drug['openfda']['spl_id'][0]
+		# 	returned_drugs[spl_id]['how_supplied'] = drug['how_supplied'][0]
+
+		# if 'dosage_and_administration' in drug and drug['dosage_and_administration'].__len__() > 0:
+		# 	returned_drugs[spl_id]'dosage_and_administration' = drug['dosage_and_administration'][0]
+
+		# if 'description' in drug and drug['description'].__len__() > 0:		
+		# 	returned_drugs[spl_id]['description'] = drug['description'][0]
+
+		# if 'adverse_reactions' in drug and drug['adverse_reactions'].__len__() > 0:
+		# 	returned_drugs[spl_id]['adverse_reactions'] = drug['adverse_reactions'][0]
+
+		# if 'general_precautions' in drug and drug['general_precautions'].__len__() > 0:
+		# 	returned_drugs[spl_id]['general_precautions'] = drug['general_precautions'][0]
+
+		# if 'warnings' in drug and drug['warnings'].__len__() > 0:
+		# 	returned_drugs[spl_id]['warnings'] = drug['warnings'][0]
 		
-		# warnings = drug['warnings'][0]
-		'product_ndc' : drug['openfda']['product_ndc'][0],
-		'substance_name' : drug['openfda']['substance_name'][0],
-		'manufacturer_name' : drug['openfda']['manufacturer_name'][0],
-		'product_type' : drug['openfda']['product_type'][0],
-		'brand' : drug['openfda']['brand_name'][0],
-		'route' : drug['openfda']['route'][0],
-		'generic_name' : drug['openfda']['generic_name'][0]
-		}
+		# warnings = drug['warnings']
+		# print warning
+		
+		if 'product_ndc' in drug['openfda'] and drug['openfda']['product_ndc'].__len__() > 0:
+			returned_drugs[spl_id]['NDC'] = drug['openfda']['product_ndc'][0]
+
+		if 'substance_name' in drug['openfda'] and drug['openfda']['substance_name'].__len__() > 0:
+			returned_drugs[spl_id]['Chemical Name'] = drug['openfda']['substance_name'][0]
+
+		if 'manufacturer_name' in drug['openfda'] and drug['openfda']['manufacturer_name'].__len__() > 0:
+			returned_drugs[spl_id]['Manufacturer'] = drug['openfda']['manufacturer_name'][0]
+
+		if 'product_type' in drug['openfda'] and drug['openfda']['product_type'].__len__() > 0:
+			returned_drugs[spl_id]['Intended User'] = drug['openfda']['product_type'][0]
+
+		if 'brand_name' in drug['openfda'] and drug['openfda']['brand_name'].__len__() > 0:
+			returned_drugs[spl_id]['Brand Name'] = drug['openfda']['brand_name'][0]
+
+		# print returned_drugs[spl_id]['brand_name']
+
+		if 'route' in drug['openfda'] and drug['openfda']['route'].__len__() > 0:
+			returned_drugs[spl_id]['Administraion Route'] = drug['openfda']['route'][0]
+
+		if 'generic_name' in drug['openfda'] and drug['openfda']['generic_name'].__len__() > 0:
+			returned_drugs[spl_id]['Generic Drug Name'] = drug['openfda']['generic_name'][0]
+	
 		
 
 		# all_drugs[requested_drug['spl_id']] = requested_drug
@@ -56,7 +97,7 @@ def search_openfda(keywords):
 
 		# db.session.add(drug)
 		
-	return returned_drugs , count
+	return returned_drugs , brand, count
 	
 
 	# print requested_drug
