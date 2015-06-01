@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+
+<h1>There are {{ count }} drugs that match your search! </h1>
+
+<p> Drug Matches: </p>
+
+<!-- <p> {{ returned_drugs }} </p> -->
+
+
+{% for spl_id, drug in returned_drugs.iteritems() %}
+	<h3> {{ brand }} manufacturered by : {{ manufacturer }} </h3> 
+
+    <input type="button" class="ratedrug" value="Rate This Drug" data-onedrug='{{drug}}'> 
+        <p> {{drug}} </p>
+
+
+
+
+		{% for name, value in drug.iteritems() %}
+			<li> {{ name }} : {{ value }} </li>
+		{% endfor %}
+		<!-- {% for drug in returned_drugs[key] %}
+			<li>{{ returned_drugs[key]["manufacturer_name"] }}</li>
+		{% endfor %} -->
+    	
+	
+
+{% endfor %}
+
+<script>
+    
+    $(".ratedrug").click(AddDrugToDB); 
+
+
+
+    function AddDrugToDB(evt) {
+
+        console.log("hello")
+        var data = $(evt.currentTarget).data()
+        var form = document.createElement('form');
+        $(form).attr("method", "post").attr("action", "/rate_drug");
+        // setting attributes in jquery
+        $("<input>").attr({
+            name: "drugdata",
+            value: data.onedrug
+        }).appendTo(form);
+        $(form).submit();
+    }
+
+
+
+
+</script>
+
+{% endblock %}

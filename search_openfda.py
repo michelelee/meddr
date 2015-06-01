@@ -1,5 +1,4 @@
-# from server import app 
-
+# from server import app
 import requests
 import json
 
@@ -12,35 +11,52 @@ openfda_api_key = keys[0]
 
 def search_openfda(keywords):
 	api_key = openfda_api_key
-	
-	
 	r = requests.get('https://api.fda.gov/drug/label.json?api_key=%s&search=brand_name:%s&limit=100' % (openfda_api_key, keywords)).json()
-
-	# r = requests.get().json() #if i get no attribute __getitem__ im missing the () parenx
-
 	druglist = r['results']
 	count = r['meta']['results']['total']
-	# print count
  	returned_drugs = {}
 	
 	for drug in druglist:
-		# print drug
 		print "\n\n"
-		# print drug['openfda']['brand_name']
 		spl_id = drug['openfda']['spl_id'][0]
-
 		brand = drug['openfda']['brand_name'][0]
-
+		manufacturer = drug['openfda']['manufacturer_name'][0]
 		returned_drugs[spl_id] = {}
 
 		descriptions = [
 			'indications_and_usage',
 			'how_supplied',
+			'dosage_and_administration',
+			'description',
+			'adverse_reactions',
+			'general_precautions',
+			'warnings'
 		]
 
 		for x in descriptions:
 			if x in drug and drug[x].__len__() > 0:
 				returned_drugs[spl_id][x] = drug[x][0]
+
+
+		openfdadescriptions = [
+			'product_ndc',
+			'substance_name',
+			'manufacturer_name',
+			'product_type',
+			'brand_name',
+			'route',
+			'generic_name'
+		]
+
+		for x in openfdadescriptions:
+			if x in drug and drug['openfda'][x].__len__() > 0:
+				returned_drugs[spl_id][x] = drug[x][0]
+
+
+
+
+	return returned_drugs, brand, manufacturer, count
+	
 
 		# if 'indications_and_usage' in drug and drug['indications_and_usage'].__len__() > 0:
 		# 	returned_drugs[spl_id]['indications_and_usage'] = drug['indications_and_usage'][0]
@@ -62,32 +78,30 @@ def search_openfda(keywords):
 
 		# if 'warnings' in drug and drug['warnings'].__len__() > 0:
 		# 	returned_drugs[spl_id]['warnings'] = drug['warnings'][0]
-		
-		# warnings = drug['warnings']
-		# print warning
-		
-		if 'product_ndc' in drug['openfda'] and drug['openfda']['product_ndc'].__len__() > 0:
-			returned_drugs[spl_id]['NDC'] = drug['openfda']['product_ndc'][0]
+	
+	
 
-		if 'substance_name' in drug['openfda'] and drug['openfda']['substance_name'].__len__() > 0:
-			returned_drugs[spl_id]['Chemical Name'] = drug['openfda']['substance_name'][0]
+	
+		# if 'product_ndc' in drug['openfda'] and drug['openfda']['product_ndc'].__len__() > 0:
+		# 	returned_drugs[spl_id]['NDC'] = drug['openfda']['product_ndc'][0]
 
-		if 'manufacturer_name' in drug['openfda'] and drug['openfda']['manufacturer_name'].__len__() > 0:
-			returned_drugs[spl_id]['Manufacturer'] = drug['openfda']['manufacturer_name'][0]
+		# if 'substance_name' in drug['openfda'] and drug['openfda']['substance_name'].__len__() > 0:
+		# 	returned_drugs[spl_id]['Chemical Name'] = drug['openfda']['substance_name'][0]
 
-		if 'product_type' in drug['openfda'] and drug['openfda']['product_type'].__len__() > 0:
-			returned_drugs[spl_id]['Intended User'] = drug['openfda']['product_type'][0]
+		# if 'manufacturer_name' in drug['openfda'] and drug['openfda']['manufacturer_name'].__len__() > 0:
+		# 	returned_drugs[spl_id]['Manufacturer'] = drug['openfda']['manufacturer_name'][0]
 
-		if 'brand_name' in drug['openfda'] and drug['openfda']['brand_name'].__len__() > 0:
-			returned_drugs[spl_id]['Brand Name'] = drug['openfda']['brand_name'][0]
+		# if 'product_type' in drug['openfda'] and drug['openfda']['product_type'].__len__() > 0:
+		# 	returned_drugs[spl_id]['Intended User'] = drug['openfda']['product_type'][0]
 
-		# print returned_drugs[spl_id]['brand_name']
+		# if 'brand_name' in drug['openfda'] and drug['openfda']['brand_name'].__len__() > 0:
+		# 	returned_drugs[spl_id]['Brand Name'] = drug['openfda']['brand_name'][0]
 
-		if 'route' in drug['openfda'] and drug['openfda']['route'].__len__() > 0:
-			returned_drugs[spl_id]['Administraion Route'] = drug['openfda']['route'][0]
+		# if 'route' in drug['openfda'] and drug['openfda']['route'].__len__() > 0:
+		# 	returned_drugs[spl_id]['Administraion Route'] = drug['openfda']['route'][0]
 
-		if 'generic_name' in drug['openfda'] and drug['openfda']['generic_name'].__len__() > 0:
-			returned_drugs[spl_id]['Generic Drug Name'] = drug['openfda']['generic_name'][0]
+		# if 'generic_name' in drug['openfda'] and drug['openfda']['generic_name'].__len__() > 0:
+		# 	returned_drugs[spl_id]['Generic Drug Name'] = drug['openfda']['generic_name'][0]
 	
 		
 
@@ -97,8 +111,7 @@ def search_openfda(keywords):
 
 		# db.session.add(drug)
 		
-	return returned_drugs , brand, count
-	
+
 
 	# print requested_drug
 

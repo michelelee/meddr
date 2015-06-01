@@ -8,7 +8,7 @@ import requests
 
  # session, redirect
 
-from model import connect_to_db, User, db
+from model import connect_to_db, User, db, Drug
 # from search_openFDA import 
 
 app = Flask(__name__)
@@ -29,16 +29,26 @@ def search():
 	
 	keywords = request.form["drugname_keywords"]
 
-	returned_drugs, brand, count = search_openfda(keywords)
+	returned_drugs, brand, manufacturer, count = search_openfda(keywords)
 
 
-	return render_template("drug_search_results.html", returned_drugs = returned_drugs,  brand = brand, count = count )
+	return render_template("drug_search_results.html", returned_drugs = returned_drugs,
+                                                        brand = brand,
+                                                        count = count,
+                                                        manufacturer = manufacturer )
 
 
-@app.route("/drug_results", methods=['POST'])
-def get_results():
-	pass
+@app.route("/rate_drug", methods=['POST'])
+def get_result():
+    """ drug info for one drug is returned here, user rates drug here"""
+    drugdata = request.form["drugdata"] 
+    print drugdata
 
+    adverse_reactions = drugdata['adverse_reactions']
+
+
+
+    return "hello"
 
 
 
