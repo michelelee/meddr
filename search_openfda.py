@@ -49,8 +49,31 @@ def search_openfda(keywords):
 		]
 
 		for x in openfdadescriptions:
-			if x in drug and drug['openfda'][x].__len__() > 0:
-				returned_drugs[spl_id][x] = drug[x][0]
+			if x in drug['openfda'] and drug['openfda'][x].__len__() > 0:
+				returned_drugs[spl_id][x] = drug['openfda'][x][0]
+
+
+		# if 'product_ndc' in drug['openfda'] and drug['openfda']['product_ndc'].__len__() > 0:
+		# 	returned_drugs[spl_id]['NDC'] = drug['openfda']['product_ndc'][0]
+
+		# if 'substance_name' in drug['openfda'] and drug['openfda']['substance_name'].__len__() > 0:
+		# 	returned_drugs[spl_id]['Chemical Name'] = drug['openfda']['substance_name'][0]
+
+		# if 'manufacturer_name' in drug['openfda'] and drug['openfda']['manufacturer_name'].__len__() > 0:
+		# 	returned_drugs[spl_id]['Manufacturer'] = drug['openfda']['manufacturer_name'][0]
+
+		# if 'product_type' in drug['openfda'] and drug['openfda']['product_type'].__len__() > 0:
+		# 	returned_drugs[spl_id]['Intended User'] = drug['openfda']['product_type'][0]
+
+		# if 'brand_name' in drug['openfda'] and drug['openfda']['brand_name'].__len__() > 0:
+		# 	returned_drugs[spl_id]['Brand Name'] = drug['openfda']['brand_name'][0]
+
+		# if 'route' in drug['openfda'] and drug['openfda']['route'].__len__() > 0:
+		# 	returned_drugs[spl_id]['Administraion Route'] = drug['openfda']['route'][0]
+
+		# if 'generic_name' in drug['openfda'] and drug['openfda']['generic_name'].__len__() > 0:
+		# 	returned_drugs[spl_id]['Generic Drug Name'] = drug['openfda']['generic_name'][0]
+	
 
 
 
@@ -81,28 +104,7 @@ def search_openfda(keywords):
 	
 	
 
-	
-		# if 'product_ndc' in drug['openfda'] and drug['openfda']['product_ndc'].__len__() > 0:
-		# 	returned_drugs[spl_id]['NDC'] = drug['openfda']['product_ndc'][0]
 
-		# if 'substance_name' in drug['openfda'] and drug['openfda']['substance_name'].__len__() > 0:
-		# 	returned_drugs[spl_id]['Chemical Name'] = drug['openfda']['substance_name'][0]
-
-		# if 'manufacturer_name' in drug['openfda'] and drug['openfda']['manufacturer_name'].__len__() > 0:
-		# 	returned_drugs[spl_id]['Manufacturer'] = drug['openfda']['manufacturer_name'][0]
-
-		# if 'product_type' in drug['openfda'] and drug['openfda']['product_type'].__len__() > 0:
-		# 	returned_drugs[spl_id]['Intended User'] = drug['openfda']['product_type'][0]
-
-		# if 'brand_name' in drug['openfda'] and drug['openfda']['brand_name'].__len__() > 0:
-		# 	returned_drugs[spl_id]['Brand Name'] = drug['openfda']['brand_name'][0]
-
-		# if 'route' in drug['openfda'] and drug['openfda']['route'].__len__() > 0:
-		# 	returned_drugs[spl_id]['Administraion Route'] = drug['openfda']['route'][0]
-
-		# if 'generic_name' in drug['openfda'] and drug['openfda']['generic_name'].__len__() > 0:
-		# 	returned_drugs[spl_id]['Generic Drug Name'] = drug['openfda']['generic_name'][0]
-	
 		
 
 		# all_drugs[requested_drug['spl_id']] = requested_drug

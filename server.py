@@ -44,7 +44,7 @@ def get_result():
     drugdata = request.form["drugdata"] 
     print drugdata
 
-    adverse_reactions = drugdata['adverse_reactions']
+    # adverse_reactions = drugdata['adverse_reactions']
 
 
 
