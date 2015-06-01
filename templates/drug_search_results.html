@@ -14,11 +14,7 @@
 	<h3> {{ brand }} manufacturered by : {{ manufacturer }} </h3> 
 
     <input type="button" class="ratedrug" value="Rate This Drug" data-onedrug='{{drug}}'> 
-        <p> {{drug}} </p>
-
-
-
-
+        
 		{% for name, value in drug.iteritems() %}
 			<li> {{ name }} : {{ value }} </li>
 		{% endfor %}
