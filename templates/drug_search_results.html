@@ -10,20 +10,18 @@
 <!-- <p> {{ returned_drugs }} </p> -->
 
 
-{% for spl_id, drug in returned_drugs.iteritems() %}
+{% for key in returned_drugs %}
 	<h3> {{ brand }} manufacturered by : {{ manufacturer }} </h3> 
 
     <input type="button" class="ratedrug" value="Rate This Drug" data-onedrug='{{drug}}'> 
         
-		{% for name, value in drug.iteritems() %}
-			<li> {{ name }} : {{ value }} </li>
-		{% endfor %}
-		<!-- {% for drug in returned_drugs[key] %}
-			<li>{{ returned_drugs[key]["manufacturer_name"] }}</li>
-		{% endfor %} -->
-    	
-	
+        <li> NDC: {{ returned_drugs[key]["product_ndc"] }} </li>
+        <li> Brand Name: {{ returned_drugs[key]['brand_name'] }} </li>
+        <li> Route of Administration: {{ returned_drugs[key]['route'] }} </li>
+        <li> Generic Name: {{ returned_drugs[key]['generic_name'] }} </li>
+        <li> Product Type: {{ returned_drugs[key]['product_type'] }} </li>  
 
+        
 {% endfor %}
 
 <script>
@@ -46,9 +44,9 @@
         $(form).submit();
     }
 
-
-
-
 </script>
 
 {% endblock %}
+
+
+

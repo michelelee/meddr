@@ -45,7 +45,8 @@ def search_openfda(keywords):
 			'product_type',
 			'brand_name',
 			'route',
-			'generic_name'
+			'generic_name',
+			'spl_id'
 		]
 
 		for x in openfdadescriptions:
