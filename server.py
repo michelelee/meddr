@@ -94,6 +94,7 @@ def search():
     returned_drugs, brand, manufacturer, count = search_openfda(keywords)
     print type(returned_drugs)
 
+
 # or the returned drugs will be in json 
     return render_template("drug_search_results.html", returned_drugs = returned_drugs,
                                                         brand = brand,
@@ -107,7 +108,21 @@ def get_result():
     spl_set_id = request.form["spl_set_id"] 
     print spl_set_id
 
-    search_openfda_by_spl_id(spl_set_id)
+    drug = Drug.query.filter_by(spl_set_id).first()
+
+    
+
+
+    if drug:
+        spl_set_id = drug.spl_set_id
+        print spl_set_id
+
+        return render_template("rate_drug.html",spl_set_id=spl_set_id )
+    else:
+        search_openfda_by_spl_id(spl_set_id)
+
+
+
 
     return render_template("rate_drug.html")
 
