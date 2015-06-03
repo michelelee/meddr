@@ -4,7 +4,10 @@
 # import search_openFDA import seed_drugs seeds_drugs.variable name 
 from flask import Flask, render_template, request
 from search_openfda import search_openfda
+from search_openfda_splid import search_openfda_by_spl_id
 import requests
+import json
+
 
  # session, redirect
 
@@ -22,33 +25,90 @@ def index():
 
 	return render_template("homepage.html")
 
+
+@app.route('/register', methods=['GET'])
+def register_form():
+    """Show meddr form for user signup."""
+
+    return render_template("register_form.html")
+
+
+@app.route('/register', methods=['POST'])
+def register_process():
+    """Process registration."""
+
+    # Get form variables
+    meddr_username =request.form["meddr_username"]
+    password = request.form["password"]
+    age = int(request.form["age"])
+    zipcode = request.form["zipcode"]
+
+    new_user = User(meddr_username=meddr_username, password=password, age=age, zipcode=zipcode)
+
+    db.session.add(new_user)
+    db.session.commit()
+
+    flash("User %s added." % email)
+    return redirect("/")
+
+
+@app.route('/login', methods=['GET'])
+def login_form():
+    """Show login form."""
+
+    return render_template("login.html")
+
+
+@app.route('/login', methods=['POST'])
+def login_process():
+    """Process login."""
+
+    # Get form variables
+    meddr_username = request.form["meddr_username_input"]
+    password = request.form["password_input"]
+
+    user = User.query.filter_by(meddr_username).first()
+
+    if not user:
+        flash("Invalid MedDr ID")
+        return redirect("/login")
+
+    if user.password != password:
+        flash("Incorrect password")
+        return redirect("/login")
+
+    session["user_id"] = user.user_id
+
+    flash("Logged in")
+    return redirect("/users/%s" % user.user_id)
+
+
 @app.route("/drug_search_results", methods=['POST'])
 #if you land on /drug_seearch resutls from a post request, do this search 
 def search():
-	"""User inputs drug search here"""
-	
-	keywords = request.form["drugname_keywords"]
+    """User inputs drug search here"""
+    
+    keywords = request.form["drugname_keywords"]
+    print keywords
 
-	returned_drugs, brand, manufacturer, count = search_openfda(keywords)
+    returned_drugs, brand, manufacturer, count = search_openfda(keywords)
+    print type(returned_drugs)
 
-
-	return render_template("drug_search_results.html", returned_drugs = returned_drugs,
+# or the returned drugs will be in json 
+    return render_template("drug_search_results.html", returned_drugs = returned_drugs,
                                                         brand = brand,
                                                         count = count,
                                                         manufacturer = manufacturer )
 
-
 @app.route("/rate_drug", methods=['POST'])
 def get_result():
     """ drug info for one drug is returned here, user rates drug here"""
-    drugdata = request.form["drugdata"] 
-    print drugdata
 
-    # adverse_reactions = drugdata['adverse_reactions']
+    spl_set_id = request.form["spl_set_id"] 
 
+    search_openfda_by_spl_id(spl_set_id)
 
-
-    return "hello"
+    return render_template("rate_drug.html")
 
 
 

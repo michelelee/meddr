@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
 
+<!-- ajax request to seperate route called /drugdata, will return jsonify(python dictorary)  -->
+
 
 
 <h1>There are {{ count }} drugs that match your search! </h1>
@@ -11,16 +13,16 @@
 
 
 {% for key in returned_drugs %}
-	<h3> {{ brand }} manufacturered by : {{ manufacturer }} </h3> 
+	<h3> {{ brand }} manufactured by : {{ returned_drugs[key]["manufacturer_name"] }} </h3> 
 
-    <input type="button" class="ratedrug" value="Rate This Drug" data-onedrug='{{drug}}'> 
+    <input type="button" class="ratedrug" value="Rate This Drug" data-onedrug="{{ returned_drugs[key]['spl_set_id']}}"> 
         
         <li> NDC: {{ returned_drugs[key]["product_ndc"] }} </li>
         <li> Brand Name: {{ returned_drugs[key]['brand_name'] }} </li>
         <li> Route of Administration: {{ returned_drugs[key]['route'] }} </li>
         <li> Generic Name: {{ returned_drugs[key]['generic_name'] }} </li>
         <li> Product Type: {{ returned_drugs[key]['product_type'] }} </li>  
-
+        <li> SPL ID: {{ returned_drugs[key]['spl_set_id'] }}</li>
         
 {% endfor %}
 
@@ -29,17 +31,20 @@
     $(".ratedrug").click(AddDrugToDB); 
 
 
-
     function AddDrugToDB(evt) {
 
-        console.log("hello")
-        var data = $(evt.currentTarget).data()
+        console.log("hello");
+        var data = $(evt.currentTarget).data().onedrug;
+
+        // var dataObject = jQuery.parseJSON(data);
+        console.log(data);
+        debugger
         var form = document.createElement('form');
         $(form).attr("method", "post").attr("action", "/rate_drug");
         // setting attributes in jquery
         $("<input>").attr({
-            name: "drugdata",
-            value: data.onedrug
+            name: "spl_set_id",
+            value: data
         }).appendTo(form);
         $(form).submit();
     }

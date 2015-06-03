@@ -11,12 +11,26 @@ class Drug(db.Model):
     __tablename__="drugs"
 
     drug_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    spl_id = db.Column(db.String(64), nullable=False)
-    brand_name = db.Column(db.String(200), nullable=False) 
-    ndc = db.Column(db.String(20), nullable=False)
-    indications_and_usage = db.Column(db.String(99999), nullable=False)
+    spl_set_id = db.Column(db.String(64), nullable=False)
+    manufacturer_name = db.Column(db.String(99999), nullable=False)
+    product_type = db.Column(db.String(99999), nullable=False)
+    description = db.Column(db.String(99999), nullable=False)
     dosage_and_administration = db.Column(db.String(99999), nullable=False)
+    route = db.Column(db.String(99999), nullable=False)
+    generic_name = db.Column(db.String(99999), nullable=False)
+    brand_name = db.Column(db.String(200), nullable=False) 
+    substance_name = db.Column(db.String(99999), nullable=False)
+    product_ndc = db.Column(db.String(20), nullable=False)
     adverse_reactions = db.Column(db.String(99999), nullable=False)
+    how_supplied = db.Column(db.String(99999), nullable=False)
+    indications_and_usage = db.Column(db.String(99999), nullable=False)
+
+
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return "<Drug_id=%s spl_set_id=%s manufacturer_name=%s product_type=%s description=%s dosage_and_administration=%s route=%s generic_name=%s brand_name=%s substance_name=%s product_ndc=%s adverse_reactions=%s how_supplied=%s indications_and_usage=%s >" % (self.drug_id, self.spl_set_id, self.manufacturer_name, self.product_type, self.description, self.dosage_and_administration, self.route, self.generic_name, self.brand_name, self.substance_name, self.product_ndc, self.adverse_reactions, self.how_supplied, self.indications_and_usage)
+
 
 class User(db.Model):
     """User of memed website."""
@@ -44,7 +58,7 @@ class drugRating(db.Model):
     drug_id = db.Column(db.Integer)
     user_id = db.Column(db.Integer)
     score = db.Column(db.Integer)
-    comments = db.Column(db.String, nullable= False)
+    comment = db.Column(db.String, nullable= False)
 
     def __repr__(self):
         """Provide helpful representation when printed."""
