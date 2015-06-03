@@ -3,6 +3,19 @@
 
 	<h1>Meddit Homepage</h1>
 
+    <ul >
+        <li><a href="/users">View All Users</a></li>
+        <li><a href="/drugs">View All Drugs</a></li>
+        {% if "user_id" in session %}
+        <li><a href="/users/{{ session['user_id'] }}">Profile</a></li>
+        <li><a href="/logout">Logout</a></li>
+        {% else %}
+        <li><a href="/register">Register</a></li>
+        <li><a href="/login">Login</a></li>
+        {% endif %}
+
+    </ul>
+
 
 	<h3>Search by Drugname</h3>
 

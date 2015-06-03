@@ -30,7 +30,7 @@ def index():
 def register_form():
     """Show meddr form for user signup."""
 
-    return render_template("register_form.html")
+    return render_template("register.html")
 
 
 @app.route('/register', methods=['POST'])
