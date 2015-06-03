@@ -105,6 +105,7 @@ def get_result():
     """ drug info for one drug is returned here, user rates drug here"""
 
     spl_set_id = request.form["spl_set_id"] 
+    print spl_set_id
 
     search_openfda_by_spl_id(spl_set_id)
 

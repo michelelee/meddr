@@ -53,7 +53,7 @@ def search_openfda(keywords):
 			if x in drug['openfda'] and drug['openfda'][x].__len__() > 0:
 				returned_drugs[spl_id][x] = drug['openfda'][x][0]
 
-		returned_drugs[spl_id]['json']= json.dumps(drug)
+		
 
 
 		# if 'product_ndc' in drug['openfda'] and drug['openfda']['product_ndc'].__len__() > 0:

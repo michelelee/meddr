@@ -11,7 +11,7 @@ class Drug(db.Model):
     __tablename__="drugs"
 
     drug_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    spl_set_id = db.Column(db.String(64), nullable=False)
+    spl_set_id = db.Column(db.String(64), nullable=False, unique=True)
     manufacturer_name = db.Column(db.String(99999), nullable=False)
     product_type = db.Column(db.String(99999), nullable=False)
     description = db.Column(db.String(99999), nullable=False)
