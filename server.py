@@ -2,7 +2,7 @@
 
 # from jinja2 import StrictUndefined
 # import search_openFDA import seed_drugs seeds_drugs.variable name 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session, flash, redirect
 from search_openfda import search_openfda
 from search_openfda_splid import search_openfda_by_spl_id
 import requests
@@ -58,7 +58,6 @@ def login_form():
 
     return render_template("login.html")
 
-
 @app.route('/login', methods=['POST'])
 def login_process():
     """Process login."""
@@ -67,7 +66,7 @@ def login_process():
     meddr_username = request.form["meddr_username_input"]
     password = request.form["password_input"]
 
-    user = User.query.filter_by(meddr_username).first()
+    user = User.query.filter_by(meddr_username=meddr_username).first()
 
     if not user:
         flash("Invalid MedDr ID")
@@ -81,6 +80,14 @@ def login_process():
 
     flash("Logged in")
     return redirect("/users/%s" % user.user_id)
+
+@app.route('/logout')
+def logout():
+    """Log out."""
+
+    del session["user_id"]
+    flash("Logged Out.")
+    return redirect("/")
 
 
 @app.route("/drug_search_results", methods=['POST'])
@@ -108,23 +115,71 @@ def get_result():
     spl_set_id = request.form["spl_set_id"] 
     print spl_set_id
 
-    drug = Drug.query.filter_by(spl_set_id).first()
-
-    
-
+    drug = Drug.query.filter_by(spl_set_id=spl_set_id).first()
 
     if drug:
         spl_set_id = drug.spl_set_id
-        print spl_set_id
+        manufacturer_name = drug.manufacturer_name
+        product_type =drug.product_type
+        description =drug.description
+        dosage_and_administration =drug.dosage_and_administration
+        route =drug.route
+        generic_name =drug.generic_name
+        brand_name = drug.brand_name
+        substance_name = drug.substance_name
+        product_ndc = drug.product_ndc
+        adverse_reactions =drug.adverse_reactions
+        how_supplied =drug.how_supplied
+        indications_and_usage =drug.indications_and_usage
+        
 
-        return render_template("rate_drug.html",spl_set_id=spl_set_id )
+        return render_template("rate_drug.html",spl_set_id=spl_set_id,
+                                                manufacturer_name=manufacturer_name,
+                                                product_type=product_type,
+                                                description=description,
+                                                dosage_and_administration=dosage_and_administration,
+                                                route=route,
+                                                generic_name=generic_name,
+                                                brand_name=brand_name,
+                                                substance_name=substance_name,
+                                                product_ndc=product_ndc,
+                                                adverse_reactions=adverse_reactions,
+                                                how_supplied=how_supplied,
+                                                indications_and_usage=indications_and_usage
+                                                 )
     else:
         search_openfda_by_spl_id(spl_set_id)
 
+        drug = Drug.query.filter_by(spl_set_id=spl_set_id).first()
 
+        spl_set_id = drug.spl_set_id
+        manufacturer_name = drug.manufacturer_name
+        product_type =drug.product_type
+        description =drug.description
+        dosage_and_administration =drug.dosage_and_administration
+        route =drug.route
+        generic_name =drug.generic_name
+        brand_name = drug.brand_name
+        substance_name = drug.substance_name
+        product_ndc = drug.product_ndc
+        adverse_reactions =drug.adverse_reactions
+        how_supplied =drug.how_supplied
+        indications_and_usage =drug.indications_and_usage
 
-
-    return render_template("rate_drug.html")
+        return render_template("rate_drug.html",spl_set_id=spl_set_id,
+                                                manufacturer_name=manufacturer_name,
+                                                product_type=product_type,
+                                                description=description,
+                                                dosage_and_administration=dosage_and_administration,
+                                                route=route,
+                                                generic_name=generic_name,
+                                                brand_name=brand_name,
+                                                substance_name=substance_name,
+                                                product_ndc=product_ndc,
+                                                adverse_reactions=adverse_reactions,
+                                                how_supplied=how_supplied,
+                                                indications_and_usage=indications_and_usage
+                                                 )
 
 
 

@@ -1,7 +1,23 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Hello mish and ari!!!</h1>
+<h1> Meddr Feedback for : {{ brand_name }} </h1>
+
+<h1> {{ drug.brand_name }} </h1>
+
+<h3> Manufacturered By: {{ manufacturer_name }} </h3>
+<h3> National Drug Code: {{ product_ndc }} </h3>
+<h3> Generic Drug Name: {{ generic_name }} </h3>
+<h3> Brand Name: {{ brand_name }} </h3>
+<h3> Chemical Name: {{ substance_name }} </h3>
+
+<h3> Indicated Route: {{ route }} </h3>
+<h3> Type of Product: {{ product_type }} </h3>
+<h3> Drug Description : {{ description }} </h3>
+<h3> How drug is supplied by Manufacturer: {{ how_supplied }} </h3>
+<h3> Dosage and Administration: {{ dosage_and_administration }} </h3>
+<h3> Indications and Usage for this drug : {{ indications_and_usage }} </h3>
+<h3>  Reported Reactions: {{ adverse_reactions }} </h3>
 
 
 {% endblock %}
