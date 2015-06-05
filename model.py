@@ -10,8 +10,8 @@ class Drug(db.Model):
 
     __tablename__="drugs"
 
-    drug_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    spl_set_id = db.Column(db.String(64), nullable=False, unique=True)
+    # drug_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    spl_set_id = db.Column(db.String(64), primary_key=True)
     manufacturer_name = db.Column(db.String(99999), nullable=False)
     product_type = db.Column(db.String(99999), nullable=False)
     description = db.Column(db.String(99999), nullable=False)
@@ -50,22 +50,28 @@ class User(db.Model):
         return "<User user_id=%s email=%s>" % (self.user_id, self.email)
 
 
-class drugRating(db.Model):
+class Rating(db.Model):
     """Rating of a drug by a user."""
 
     __tablename__ = "ratings"
 
     rating_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    drug_id = db.Column(db.Integer)
-    user_id = db.Column(db.Integer)
+    spl_set_id = db.Column(db.String(64), db.ForeignKey('drugs.spl_set_id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     score = db.Column(db.Integer)
     comment = db.Column(db.String, nullable= False)
+
+    user = db.relationship("User",
+                           backref=db.backref("ratings", order_by=rating_id))
+
+    drug = db.relationship("Drug",
+                            backref=db.backref("ratings", order_by=rating_id))
 
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<Rating rating_id=%s movie_id=%s user_id=%s score=%s>" % (
-            self.rating_id, self.movie_id, self.user_id, self.score)
+        return "<Rating rating_id=%s spl_set_id=%s user_id=%s score=%s>" % (
+            self.rating_id, self.spl_set_id, self.user_id, self.score)
 
 
 

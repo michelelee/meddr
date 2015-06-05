@@ -4,8 +4,7 @@
 	<h1>Meddit Homepage</h1>
 
     <ul >
-        <li><a href="/users">View All Users</a></li>
-        <li><a href="/drugs">View All Drugs</a></li>
+        <li><a href="/drugs">View Drugs</a></li>
         {% if "user_id" in session %}
         <li><a href="/users/{{ session['user_id'] }}">Profile</a></li>
         <li><a href="/logout">Logout</a></li>

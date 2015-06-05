@@ -1,23 +1,47 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1> Meddr Feedback for : {{ brand_name }} </h1>
+<h3> {{user_id.meddr_username}}
 
-<h1> {{ drug.brand_name }} </h1>
+<h1> Meddr Feedback for : {{ drug.brand_name }} </h1>
 
-<h3> Manufacturered By: {{ manufacturer_name }} </h3>
-<h3> National Drug Code: {{ product_ndc }} </h3>
-<h3> Generic Drug Name: {{ generic_name }} </h3>
-<h3> Brand Name: {{ brand_name }} </h3>
-<h3> Chemical Name: {{ substance_name }} </h3>
+<p>Average rating: {{ avg_rating }}</p>
 
-<h3> Indicated Route: {{ route }} </h3>
-<h3> Type of Product: {{ product_type }} </h3>
-<h3> Drug Description : {{ description }} </h3>
-<h3> How drug is supplied by Manufacturer: {{ how_supplied }} </h3>
-<h3> Dosage and Administration: {{ dosage_and_administration }} </h3>
-<h3> Indications and Usage for this drug : {{ indications_and_usage }} </h3>
-<h3>  Reported Reactions: {{ adverse_reactions }} </h3>
+{% if "user_id" in session %}
+	  <h2>Your Feedback for this Drug:</h2>
+	{% if user_rating %}
+	    <p>You currently rate this a {{ user_rating.score }}</p>
+	{% endif %}
+		<form action="/add_drug_feedback" method="POST">
+			<div>
+			  <label>Rating:
+			      <input type="number" name="score">
+			  </label>
+			</div>
+			<div>
+			  <label>Comments:
+			      <input type="text" name="comment">
+			  </label>
+			</div>
+
+			<input type="submit" value="Submit your rating">
+		</form>
+{% endif %}
+
+
+<h3> Manufacturered By: {{ drug.manufacturer_name }} </h3>
+<h3> National Drug Code: {{ drug.product_ndc }} </h3>
+<h3> Generic Drug Name: {{ drug.generic_name }} </h3>
+<h3> Brand Name: {{ drug.brand_name }} </h3>
+<h3> Chemical Name: {{ drug.substance_name }} </h3>
+
+<h3> Indicated Route: {{ drug.route }} </h3>
+<h3> Type of Product: {{ drug.product_type }} </h3>
+<h3> Drug Description : {{ drug.description }} </h3>
+<h3> How drug is supplied by Manufacturer: {{ drug.how_supplied }} </h3>
+<h3> Dosage and Administration: {{ drug.dosage_and_administration }} </h3>
+<h3> Indications and Usage for this drug : {{ drug.indications_and_usage }} </h3>
+<h3>  Reported Reactions: {{ drug.adverse_reactions }} </h3>
 
 
 {% endblock %}

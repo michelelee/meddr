@@ -11,7 +11,7 @@ import json
 
  # session, redirect
 
-from model import connect_to_db, User, db, Drug
+from model import connect_to_db, User, db, Drug, Rating
 # from search_openFDA import 
 
 app = Flask(__name__)
@@ -48,7 +48,7 @@ def register_process():
     db.session.add(new_user)
     db.session.commit()
 
-    flash("User %s added." % email)
+    flash("User %s added." % meddr_username)
     return redirect("/")
 
 
@@ -79,7 +79,7 @@ def login_process():
     session["user_id"] = user.user_id
 
     flash("Logged in")
-    return redirect("/users/%s" % user.user_id)
+    return redirect("/")
 
 @app.route('/logout')
 def logout():
@@ -108,79 +108,82 @@ def search():
                                                         count = count,
                                                         manufacturer = manufacturer )
 
-@app.route("/rate_drug", methods=['POST'])
+@app.route("/rate_drug", methods=['POST', 'GET'])
 def get_result():
-    """ drug info for one drug is returned here, user rates drug here"""
+    """Show info about drug.
 
-    spl_set_id = request.form["spl_set_id"] 
-    print spl_set_id
+    If a user is logged in, we will let them add drug feedbadk.
+    """
+
+
+    spl_set_id = request.values["spl_set_id"]
+
+
+    # spl_set_id = request.form.get("spl_set_id", request.args["spl_set_id"])
+
+
+    user_id = session.get("user_id")
+
+    if user_id:
+        user_rating = Rating.query.filter_by(
+            spl_set_id=spl_set_id, user_id=user_id).first()
+    else:
+        user_rating = None
+
 
     drug = Drug.query.filter_by(spl_set_id=spl_set_id).first()
 
     if drug:
-        spl_set_id = drug.spl_set_id
-        manufacturer_name = drug.manufacturer_name
-        product_type =drug.product_type
-        description =drug.description
-        dosage_and_administration =drug.dosage_and_administration
-        route =drug.route
-        generic_name =drug.generic_name
-        brand_name = drug.brand_name
-        substance_name = drug.substance_name
-        product_ndc = drug.product_ndc
-        adverse_reactions =drug.adverse_reactions
-        how_supplied =drug.how_supplied
-        indications_and_usage =drug.indications_and_usage
-        
+        session["spl_set_id"] = drug.spl_set_id
 
-        return render_template("rate_drug.html",spl_set_id=spl_set_id,
-                                                manufacturer_name=manufacturer_name,
-                                                product_type=product_type,
-                                                description=description,
-                                                dosage_and_administration=dosage_and_administration,
-                                                route=route,
-                                                generic_name=generic_name,
-                                                brand_name=brand_name,
-                                                substance_name=substance_name,
-                                                product_ndc=product_ndc,
-                                                adverse_reactions=adverse_reactions,
-                                                how_supplied=how_supplied,
-                                                indications_and_usage=indications_and_usage
+        return render_template("rate_drug.html",drug=drug,
+                                                user_id=user_id,
+                                                user_rating=user_rating
                                                  )
+
     else:
         search_openfda_by_spl_id(spl_set_id)
 
         drug = Drug.query.filter_by(spl_set_id=spl_set_id).first()
 
-        spl_set_id = drug.spl_set_id
-        manufacturer_name = drug.manufacturer_name
-        product_type =drug.product_type
-        description =drug.description
-        dosage_and_administration =drug.dosage_and_administration
-        route =drug.route
-        generic_name =drug.generic_name
-        brand_name = drug.brand_name
-        substance_name = drug.substance_name
-        product_ndc = drug.product_ndc
-        adverse_reactions =drug.adverse_reactions
-        how_supplied =drug.how_supplied
-        indications_and_usage =drug.indications_and_usage
+        session["spl_set_id"] = drug.spl_set_id
 
-        return render_template("rate_drug.html",spl_set_id=spl_set_id,
-                                                manufacturer_name=manufacturer_name,
-                                                product_type=product_type,
-                                                description=description,
-                                                dosage_and_administration=dosage_and_administration,
-                                                route=route,
-                                                generic_name=generic_name,
-                                                brand_name=brand_name,
-                                                substance_name=substance_name,
-                                                product_ndc=product_ndc,
-                                                adverse_reactions=adverse_reactions,
-                                                how_supplied=how_supplied,
-                                                indications_and_usage=indications_and_usage
+        return render_template("rate_drug.html",drug=drug,
+                                        user_id=user_id,
+                                        user_rating=user_rating
                                                  )
 
+@app.route("/add_drug_feedback", methods=['POST'])
+def drug_details_process():
+    """Add/edit a rating."""
+
+    spl_set_id = session.get('spl_set_id')
+    print spl_set_id
+
+    score = int(request.form["score"])
+    print score
+
+    comment = request.form["comment"]
+    print comment 
+
+    user_id = session.get("user_id")
+
+    rating = Rating.query.filter_by(user_id=user_id, spl_set_id=spl_set_id).first()
+
+    if rating:
+        rating.score = score
+        flash("Rating updated.")
+
+    else:
+        rating = Rating(user_id=user_id, spl_set_id=spl_set_id, score=score, comment=comment)
+        flash("feedbadk added.")
+        db.session.add(rating)
+
+    db.session.commit()
+
+    return redirect("/rate_drug?spl_set_id=%s" % spl_set_id)
+
+    # return "drug added to database"
 
 
 if __name__ == "__main__":
@@ -197,3 +200,36 @@ if __name__ == "__main__":
     # DebugToolbarExtension(app)
 
     app.run(use_debugger=True, debug=app.debug)
+
+
+
+# spl_set_id=spl_set_id,
+#                                                 manufacturer_name=manufacturer_name,
+#                                                 product_type=product_type,
+#                                                 description=description,
+#                                                 dosage_and_administration=dosage_and_administration,
+#                                                 route=route,
+#                                                 generic_name=generic_name,
+#                                                 brand_name=brand_name,
+#                                                 substance_name=substance_name,
+#                                                 product_ndc=product_ndc,
+#                                                 adverse_reactions=adverse_reactions,
+#                                                 how_supplied=how_supplied,
+#                                                 indications_and_usage=indications_and_usage, 
+#                                                 avg_rating=avg_rating,
+
+
+
+#             spl_set_id = drug.spl_set_id
+#         manufacturer_name = drug.manufacturer_name
+#         product_type =drug.product_type
+#         description =drug.description
+#         dosage_and_administration =drug.dosage_and_administration
+#         route =drug.route
+#         generic_name =drug.generic_name
+#         brand_name = drug.brand_name
+#         substance_name = drug.substance_name
+#         product_ndc = drug.product_ndc
+#         adverse_reactions =drug.adverse_reactions
+#         how_supplied =drug.how_supplied
+#         indications_and_usage =drug.indications_and_usage
