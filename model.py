@@ -60,12 +60,23 @@ class Rating(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     score = db.Column(db.Integer)
     comment = db.Column(db.String, nullable= False)
+    Headache = db.Column(db.Integer)
+    Nausea = db.Column(db.Integer)
+
 
     user = db.relationship("User",
                            backref=db.backref("ratings", order_by=rating_id))
 
     drug = db.relationship("Drug",
                             backref=db.backref("ratings", order_by=rating_id))
+
+    def add_side_effect(self, side_effect=None):
+        if side_effect == "headache":
+            Headache = 1
+        elif side_effect == "nausea":
+            Nausea = 1
+        else:
+            pass
 
     def __repr__(self):
         """Provide helpful representation when printed."""

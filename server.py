@@ -166,6 +166,13 @@ def drug_details_process():
     comment = request.form["comment"]
     print comment 
 
+    side_effect = request.form["side_effect"]
+    print side_effect
+
+    #get all side effects 
+
+    feedback = request.form
+
     user_id = session.get("user_id")
 
     rating = Rating.query.filter_by(user_id=user_id, spl_set_id=spl_set_id).first()
@@ -178,6 +185,11 @@ def drug_details_process():
         rating = Rating(user_id=user_id, spl_set_id=spl_set_id, score=score, comment=comment)
         flash("feedbadk added.")
         db.session.add(rating)
+
+    for item in feedback:
+        if item[0] == 'side_effect':
+            rating.add_side_effect(item[1])
+
 
     db.session.commit()
 
