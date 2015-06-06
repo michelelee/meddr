@@ -60,8 +60,8 @@ class Rating(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     score = db.Column(db.Integer)
     comment = db.Column(db.String, nullable= False)
-    Headache = db.Column(db.Integer)
-    Nausea = db.Column(db.Integer)
+    headache = db.Column(db.Integer)
+    nausea = db.Column(db.Integer)
 
 
     user = db.relationship("User",
@@ -72,9 +72,9 @@ class Rating(db.Model):
 
     def add_side_effect(self, side_effect=None):
         if side_effect == "headache":
-            Headache = 1
+            headache = 1
         elif side_effect == "nausea":
-            Nausea = 1
+            nausea = 1
         else:
             pass
 

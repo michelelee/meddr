@@ -96,13 +96,9 @@ def search():
     """User inputs drug search here"""
     
     keywords = request.form["drugname_keywords"]
-    print keywords
 
     returned_drugs, brand, manufacturer, count = search_openfda(keywords)
-    print type(returned_drugs)
 
-
-# or the returned drugs will be in json 
     return render_template("drug_search_results.html", returned_drugs = returned_drugs,
                                                         brand = brand,
                                                         count = count,
@@ -169,15 +165,27 @@ def drug_details_process():
     comment = request.form["comment"]
     print comment 
 
-    # rating_scores = [r.score for r in drugs.ratings]
-    # avg_rating = float(sum(rating_scores)) / len(rating_scores)
+    side_effect = request.form.getlist('side_effect')
+    print 'side effects: ', side_effect
 
-    side_effect = request.form["side_effect"]
-    print side_effect
+    print 'i am drugs: ', Drug
+    rating_scores = [r.score for r in Drug.ratings]
+    drug_ratings_sum = Select AVG(score) as average_scores From Ratings  group by spl_set_id Where spl_set_id = spl_set_id
+
+    avg_rating = float(sum(rating_scores)) / len(rating_scores)
 
     #get all side effects 
 
     feedback = request.form
+    print feedback
+
+    sidestuff = []
+
+    for item in feedback:
+        if item[0] == 'side_effect':
+           print item[1]
+
+    print sidestuff
 
     user_id = session.get("user_id")
 
@@ -185,17 +193,19 @@ def drug_details_process():
 
     if rating:
         rating.score = score
+        rating.comment = comment
+        # rating.  = 
         flash("Rating updated.")
 
     else:
-        rating = Rating(user_id=user_id, spl_set_id=spl_set_id, score=score, comment=comment)
-        flash("feedbadk added.")
-        db.session.add(rating)
+        rating = Rating(user_id=user_id, spl_set_id=spl_set_id, score=score, comment=comment,)
 
         for item in feedback:
             if item[0] == 'side_effect':
                 rating.add_side_effect(item[1])
 
+
+        db.session.add(rating)
 
     db.session.commit()
 
