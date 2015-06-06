@@ -160,11 +160,17 @@ def drug_details_process():
     spl_set_id = session.get('spl_set_id')
     print spl_set_id
 
+    thisdrug = Drug.query.get(spl_set_id)
+    print thisdrug
+
     score = int(request.form["score"])
     print score
 
     comment = request.form["comment"]
     print comment 
+
+    # rating_scores = [r.score for r in drugs.ratings]
+    # avg_rating = float(sum(rating_scores)) / len(rating_scores)
 
     side_effect = request.form["side_effect"]
     print side_effect
@@ -186,9 +192,9 @@ def drug_details_process():
         flash("feedbadk added.")
         db.session.add(rating)
 
-    for item in feedback:
-        if item[0] == 'side_effect':
-            rating.add_side_effect(item[1])
+        for item in feedback:
+            if item[0] == 'side_effect':
+                rating.add_side_effect(item[1])
 
 
     db.session.commit()

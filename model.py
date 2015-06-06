@@ -28,7 +28,7 @@ class Drug(db.Model):
 
     def __repr__(self):
         """Provide helpful representation when printed."""
-        return "<Drug_id=%s generic_name=%s brand_name=%s>" % (self.drug_id, self.generic_name, self.brand_name)
+        return "<spl_set_id=%s generic_name=%s brand_name=%s>" % (self.spl_set_id, self.generic_name, self.brand_name)
 
         # return "<Drug_id=%s spl_set_id=%s manufacturer_name=%s product_type=%s description=%s dosage_and_administration=%s route=%s generic_name=%s brand_name=%s substance_name=%s product_ndc=%s adverse_reactions=%s how_supplied=%s indications_and_usage=%s >" % (self.drug_id, self.spl_set_id, self.manufacturer_name, self.product_type, self.description, self.dosage_and_administration, self.route, self.generic_name, self.brand_name, self.substance_name, self.product_ndc, self.adverse_reactions, self.how_supplied, self.indications_and_usage)
 
