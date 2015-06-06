@@ -72,9 +72,10 @@ class Rating(db.Model):
 
     def add_side_effect(self, side_effect=None):
         if side_effect == "headache":
-            headache = 1
+            Rating.headache = 1
+            print "hello there"
         elif side_effect == "nausea":
-            nausea = 1
+            Rating.nausea = 1
         else:
             pass
 
