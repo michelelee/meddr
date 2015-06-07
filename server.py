@@ -168,37 +168,25 @@ def drug_details_process():
     side_effect = request.form.getlist('side_effect')
     print 'side effects: ', side_effect
 
-    # drug_ratings_sum = Select AVG(score) as average_scores From Ratings  group by spl_set_id Where spl_set_id = spl_set_id
-
-    # avg_rating = float(sum(rating_scores)) / len(rating_scores)
+    drug_ratings_sum = "Select CAST(AVG(score) AS INT) as average_scores From Ratings  Where spl_set_id = spl_set_id"
 
 
     user_id = session.get("user_id")
 
     rating = Rating.query.filter_by(user_id=user_id, spl_set_id=spl_set_id).first()
 
-    if rating:
-        rating.score = score
-        rating.comment = comment
+    if not rating:
+        rating = Rating(user_id=user_id, spl_set_id=spl_set_id)
+
+    rating.score = score
+    rating.comment = comment
        
-        for item in side_effect:
-            rating.add_side_effect(item)
+    rating.reset_side_effect()
 
-        # rating.  = 
-        flash("Rating updated.")
+    for item in side_effect:
+        rating.add_side_effect(item)
 
-    else:
-        rating = Rating(user_id=user_id, spl_set_id=spl_set_id, score=score, comment=comment)
-
-        for item in side_effect:
-            rating.add_side_effect(item)
-        # for item in feedback:
-        #     if item[0] == 'side_effect':
-        #         rating.add_side_effect(item[1])
-
-
-        db.session.add(rating)
-
+    db.session.add(rating)
     db.session.commit()
 
     return redirect("/rate_drug?spl_set_id=%s" % spl_set_id)

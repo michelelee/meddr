@@ -1,6 +1,7 @@
 """Model and databasefor memed"""
 
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import CheckConstraint
 
 db = SQLAlchemy()
 
@@ -55,14 +56,15 @@ class Rating(db.Model):
 
     __tablename__ = "ratings"
 
+
     rating_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     spl_set_id = db.Column(db.String(64), db.ForeignKey('drugs.spl_set_id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     score = db.Column(db.Integer)
     comment = db.Column(db.String, nullable= False)
-    headache = db.Column(db.Integer)
-    nausea = db.Column(db.Integer)
-
+    headache = db.Column(db.Integer, default=0)
+    nausea = db.Column(db.Integer, default=0)
+    __table_args__ = (CheckConstraint(score.in_(range(1, 11))), )
 
     user = db.relationship("User",
                            backref=db.backref("ratings", order_by=rating_id))
@@ -72,12 +74,16 @@ class Rating(db.Model):
 
     def add_side_effect(self, side_effect=None):
         if side_effect == "headache":
-            Rating.headache = 1
+            self.headache = 1
             print "hello there"
         elif side_effect == "nausea":
-            Rating.nausea = 1
+            self.nausea = 1
         else:
             pass
+
+    def reset_side_effect(self):
+        self.headache = 0
+        self.nausea = 0
 
     def __repr__(self):
         """Provide helpful representation when printed."""
