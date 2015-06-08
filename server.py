@@ -5,6 +5,7 @@
 from flask import Flask, render_template, request, session, flash, redirect
 from search_openfda import search_openfda
 from search_openfda_splid import search_openfda_by_spl_id
+#from sqlalchemy.sql import func
 import requests
 import json
 
@@ -127,6 +128,20 @@ def get_result():
         user_rating = None
 
 
+    # rating_scores = [r.score for r in spl_set_id.ratings]
+    # print rating_scores
+    # avg_rating = float(sum(rating_scores)) / len(rating_scores)
+
+    # db.session.query(...)   <-- query only these fields
+    #          db.func.avg(fld)    <--- get average of this field
+    #                      .scalar()    <--- return single field from single result, eg [(1,)] -> 1
+    avg_score = db.session(db.func.avg(Rating.score).query.filter_by(spl_set_id=spl_set_id.scalar()
+
+    print avg_score
+    # drug_ratings_sum = "Select CAST(AVG(score) AS INT) as average_scores From Ratings  Where spl_set_id = spl_set_id"
+
+
+
     drug = Drug.query.filter_by(spl_set_id=spl_set_id).first()
 
     if drug:
@@ -168,8 +183,7 @@ def drug_details_process():
     side_effect = request.form.getlist('side_effect')
     print 'side effects: ', side_effect
 
-    # drug_ratings_sum = "Select CAST(AVG(score) AS INT) as average_scores From Ratings  Where spl_set_id = spl_set_id"
-
+    
 
     user_id = session.get("user_id")
 
@@ -191,7 +205,6 @@ def drug_details_process():
 
     return redirect("/rate_drug?spl_set_id=%s" % spl_set_id)
 
-    # return "drug added to database"
 
 
 if __name__ == "__main__":
@@ -208,36 +221,3 @@ if __name__ == "__main__":
     # DebugToolbarExtension(app)
 
     app.run(use_debugger=True, debug=app.debug)
-
-
-
-# spl_set_id=spl_set_id,
-#                                                 manufacturer_name=manufacturer_name,
-#                                                 product_type=product_type,
-#                                                 description=description,
-#                                                 dosage_and_administration=dosage_and_administration,
-#                                                 route=route,
-#                                                 generic_name=generic_name,
-#                                                 brand_name=brand_name,
-#                                                 substance_name=substance_name,
-#                                                 product_ndc=product_ndc,
-#                                                 adverse_reactions=adverse_reactions,
-#                                                 how_supplied=how_supplied,
-#                                                 indications_and_usage=indications_and_usage, 
-#                                                 avg_rating=avg_rating,
-
-
-
-#             spl_set_id = drug.spl_set_id
-#         manufacturer_name = drug.manufacturer_name
-#         product_type =drug.product_type
-#         description =drug.description
-#         dosage_and_administration =drug.dosage_and_administration
-#         route =drug.route
-#         generic_name =drug.generic_name
-#         brand_name = drug.brand_name
-#         substance_name = drug.substance_name
-#         product_ndc = drug.product_ndc
-#         adverse_reactions =drug.adverse_reactions
-#         how_supplied =drug.how_supplied
-#         indications_and_usage =drug.indications_and_usage

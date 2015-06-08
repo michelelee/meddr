@@ -3,7 +3,7 @@
 
 <h3> {{user_id.meddr_username}}
 
-<h1> Meddr Feedback for : {{ drug.brand_name }} </h1>
+<h1> meddr. feedback for : {{ drug.brand_name }} </h1>
 
 <p>Average rating: {{ avg_rating }}</p>
 
@@ -15,7 +15,14 @@
 		<form action="/add_drug_feedback" method="POST">
 			<div>
 			  <label>Rating:
-			      <input type="number" name="score">
+
+			  	<input type="radio" name="score" value="1">1
+  				<input type="radio" name="score" value="2">2
+  				<input type="radio" name="score" value="3">3
+  				<input type="radio" name="score" value="4">4
+  				<input type="radio" name="score" value="5">5
+
+			      <!-- <input type="number" name="score"> -->
 			  </label>
 			</div>
 			<div>
@@ -26,7 +33,6 @@
 
 				Side Effects: 
 			<div>
-				
 				<input type="checkbox" name="side_effect" value="headache"> Headache <br>
 				<input type="checkbox" name="side_effect" value="stomach_pain"> Stomach Pain <br>
 				<input type="checkbox" name="side_effect" value="body_aches "> Body Aches or Cramps <br>
@@ -44,7 +50,7 @@
 				<input type="checkbox" name="side_effect" value="weight_loss"> Weight Loss <br>
 
 			</div>		
-			<input type="submit" value="Submit your rating">
+			<input type="submit" value="Submit your Drug Feedback">
 		</form>
 {% endif %}
 
