@@ -168,7 +168,7 @@ def drug_details_process():
     side_effect = request.form.getlist('side_effect')
     print 'side effects: ', side_effect
 
-    drug_ratings_sum = "Select CAST(AVG(score) AS INT) as average_scores From Ratings  Where spl_set_id = spl_set_id"
+    # drug_ratings_sum = "Select CAST(AVG(score) AS INT) as average_scores From Ratings  Where spl_set_id = spl_set_id"
 
 
     user_id = session.get("user_id")

@@ -63,7 +63,22 @@ class Rating(db.Model):
     score = db.Column(db.Integer)
     comment = db.Column(db.String, nullable= False)
     headache = db.Column(db.Integer, default=0)
-    nausea = db.Column(db.Integer, default=0)
+    stomach_pain = db.Column(db.Integer, default=0)
+    body_aches = db.Column(db.Integer, default=0)
+    diarrhea = db.Column(db.Integer, default=0)
+    constipation = db.Column(db.Integer, default=0)
+    vomiting_nausea = db.Column(db.Integer, default=0)
+    moodiness = db.Column(db.Integer, default=0)
+    drowsiness = db.Column(db.Integer, default=0)
+    disorientation = db.Column(db.Integer, default=0)
+    bloating_swelling = db.Column(db.Integer, default=0)
+    skin_reactions = db.Column(db.Integer, default=0)
+    chills_sweating = db.Column(db.Integer, default=0)
+    dizziness = db.Column(db.Integer, default=0)
+    weight_gain = db.Column(db.Integer, default=0)
+    weight_loss = db.Column(db.Integer, default=0)
+
+
     __table_args__ = (CheckConstraint(score.in_(range(1, 11))), )
 
     user = db.relationship("User",
@@ -76,14 +91,54 @@ class Rating(db.Model):
         if side_effect == "headache":
             self.headache = 1
             print "hello there"
-        elif side_effect == "nausea":
-            self.nausea = 1
+        elif side_effect == "stomach_pain":
+            self.stomach_pain = 1
+        elif side_effect == "body_aches":
+            self.body_aches = 1
+        elif side_effect == "diarrhea":
+            self.diarrhea = 1
+        elif side_effect == "constipation":
+            self.constipation = 1
+        elif side_effect == "vomiting_nausea":
+            self.vomiting_nausea = 1
+        elif side_effect == "moodiness":
+            self.moodiness = 1
+        elif side_effect == "drowsiness":
+            self.drowsiness = 1
+        elif side_effect == "disorientation":
+            self.disorientation = 1
+        elif side_effect == "bloating_swelling":
+            self.bloating_swelling = 1
+        elif side_effect == "skin_reactions":
+            self.skin_reactions = 1
+        elif side_effect == "chills_sweating":
+            self.chills_sweating = 1
+        elif side_effect == "dizziness":
+            self.dizziness = 1
+        elif side_effect == "weight_gain":
+            self.weight_gain = 1
+        elif side_effect == "weight_loss":
+            self.weight_loss = 1
         else:
             pass
 
     def reset_side_effect(self):
         self.headache = 0
-        self.nausea = 0
+        self.stomach_pain = 0
+        self.body_aches = 0
+        self.diarrhea = 0
+        self.constipation = 0
+        self.vomiting_nausea = 0
+        self.moodiness = 0
+        self.drowsiness = 0
+        self.disorientation = 0
+        self.bloating_swelling = 0
+        self.skin_reactions = 0
+        self.chills_sweating = 0
+        self.dizziness = 0
+        self.weight_gain = 0
+        self.weight_loss = 0
+
 
     def __repr__(self):
         """Provide helpful representation when printed."""
