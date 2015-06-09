@@ -1,41 +1,49 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h3> {{user_id.meddr_username}}
+<h3> {{user.meddr_username}}
 
 <h1> meddr. feedback for : {{ drug.brand_name }} </h1>
 
-<p>Average rating: {{ avg_rating }}</p>
+<p>Average rating: {{ avg_score }}</p>
 
 {% if "user_id" in session %}
 	  <h2>Your Feedback for this Drug:</h2>
 	{% if user_rating %}
 	    <p>You currently rate this a {{ user_rating.score }}</p>
 	{% endif %}
+		
+{% for comment_tuple in comments: %}
+	
+	{{ comment_tuple[0] }}
+        
+{% endfor %}
+
+
 		<form action="/add_drug_feedback" method="POST">
 			<div>
 			  <label>Rating:
 
-			  	<input type="radio" name="score" value="1">1
+			  	<input type="radio" name="score" value="1">1  
   				<input type="radio" name="score" value="2">2
   				<input type="radio" name="score" value="3">3
   				<input type="radio" name="score" value="4">4
   				<input type="radio" name="score" value="5">5
-
-			      <!-- <input type="number" name="score"> -->
 			  </label>
 			</div>
+
+
 			<div>
 			  <label>Comments:
 			      <input type="text" name="comment">
 			  </label>
 			</div>
 
-				Side Effects: 
+			Side Effects: 
 			<div>
 				<input type="checkbox" name="side_effect" value="headache"> Headache <br>
 				<input type="checkbox" name="side_effect" value="stomach_pain"> Stomach Pain <br>
-				<input type="checkbox" name="side_effect" value="body_aches "> Body Aches or Cramps <br>
+				<input type="checkbox" name="side_effect" value="body_aches"> Body Aches or Cramps <br>
 				<input type="checkbox" name="side_effect" value="diarrhea"> Diarrhea <br>
 				<input type="checkbox" name="side_effect" value="constipation"> Constipation <br>
 				<input type="checkbox" name="side_effect" value="vomiting_nausea"> Nausea or Vomiting <br>
@@ -54,20 +62,21 @@
 		</form>
 {% endif %}
 
+<div>
+<h4> Manufacturered By: {{ drug.manufacturer_name  }} </h4>
+<h4> National Drug Code: {{ drug.product_ndc }} </h4>
+<h4> Generic Drug Name: {{ drug.generic_name }} </h4>
+<h4> Brand Name: {{ drug.brand_name }} </h4>
+<h4> Chemical Name: {{ drug.substance_name }} </h4>
 
-<h3> Manufacturered By: {{ drug.manufacturer_name }} </h3>
-<h3> National Drug Code: {{ drug.product_ndc }} </h3>
-<h3> Generic Drug Name: {{ drug.generic_name }} </h3>
-<h3> Brand Name: {{ drug.brand_name }} </h3>
-<h3> Chemical Name: {{ drug.substance_name }} </h3>
-
-<h3> Indicated Route: {{ drug.route }} </h3>
-<h3> Type of Product: {{ drug.product_type }} </h3>
-<h3> Drug Description : {{ drug.description }} </h3>
-<h3> How drug is supplied by Manufacturer: {{ drug.how_supplied }} </h3>
-<h3> Dosage and Administration: {{ drug.dosage_and_administration }} </h3>
-<h3> Indications and Usage for this drug : {{ drug.indications_and_usage }} </h3>
-<h3>  Reported Reactions: {{ drug.adverse_reactions }} </h3>
+<h4> Indicated Route: {{ drug.route }} </h4>
+<h4> Type of Product: {{ drug.product_type }} </h4>
+<h4> Drug Description : {{ drug.description }} </h4>
+<h4> How drug is supplied by Manufacturer: {{ drug.how_supplied }} </h4>
+<h4> Dosage and Administration: {{ drug.dosage_and_administration }} </h4>
+<h4> Indications and Usage for this drug : {{ drug.indications_and_usage }} </h4>
+<h4>  Reported Reactions: {{ drug.adverse_reactions| truncate(100) }} </h4>
+</div>
 
 
 {% endblock %}

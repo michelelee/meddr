@@ -4,23 +4,22 @@
 	<h1>meddr.</h1>
 
     <ul >
-        {% if "user_id" in session %}
-        <li><a href="/users/{{ session['user_id'] }}">Profile</a></li>
+<!--         {% if "user_id" in session %}
+        <li><a href="/user">Profile</a></li>
         <li><a href="/logout">Logout</a></li>
         {% else %}
         <li><a href="/register">Register</a></li>
         <li><a href="/login">Login</a></li>
         {% endif %}
-
+ -->
     </ul>
 
 
-	<h3>Search by Drugname</h3>
+	<h3>Search by Drugname:</h3>
 
 	<form action="/drug_search_results" method="POST">
 
 	<label> 
-		Drug Search: 
 		<input type="text" name="drugname_keywords">
 	</label>
   <input type="submit">

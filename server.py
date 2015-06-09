@@ -1,24 +1,19 @@
 """medme"""
 
 # from jinja2 import StrictUndefined
-# import search_openFDA import seed_drugs seeds_drugs.variable name 
 from flask import Flask, render_template, request, session, flash, redirect
 from search_openfda import search_openfda
 from search_openfda_splid import search_openfda_by_spl_id
-#from sqlalchemy.sql import func
 import requests
 import json
 
-
- # session, redirect
-
 from model import connect_to_db, User, db, Drug, Rating
-# from search_openFDA import 
+
 
 app = Flask(__name__)
 app.secret_key = "ABC"
 
-# app.jinja_env.undefined = StrictUndefined
+
 
 @app.route("/")
 def index():
@@ -38,7 +33,6 @@ def register_form():
 def register_process():
     """Process registration."""
 
-    # Get form variables
     meddr_username =request.form["meddr_username"]
     password = request.form["password"]
     age = int(request.form["age"])
@@ -59,11 +53,11 @@ def login_form():
 
     return render_template("login.html")
 
+
 @app.route('/login', methods=['POST'])
 def login_process():
     """Process login."""
 
-    # Get form variables
     meddr_username = request.form["meddr_username_input"]
     password = request.form["password_input"]
 
@@ -78,9 +72,11 @@ def login_process():
         return redirect("/login")
 
     session["user_id"] = user.user_id
+    session["user_name"] = user.meddr_username
 
     flash("Logged in")
     return redirect("/")
+
 
 @app.route('/logout')
 def logout():
@@ -91,35 +87,88 @@ def logout():
     return redirect("/")
 
 
+@app.route('/user')
+def get_user_info():
+    """Show user profile"""
+
+    user_id = session.get("user_id")
+
+    if user_id:
+        all_rated = Rating.query.filter_by(user_id=user_id).all()
+        print user_id , all_rated
+
+        render_template("user_profile.html",all_rated=all_rated)
+
+    else:
+        flash("Invalid MedDr ID")
+        return redirect("/login")
+
+
+
 @app.route("/drug_search_results", methods=['POST'])
-#if you land on /drug_seearch resutls from a post request, do this search 
 def search():
     """User inputs drug search here"""
     
     keywords = request.form["drugname_keywords"]
 
-    returned_drugs, brand, manufacturer, count = search_openfda(keywords)
+    try:
+        returned_drugs, brand, manufacturer, count = search_openfda(keywords)
+    except:
+        flash("No drug matches found matching '%s'."  % keywords )
+        return redirect("/")
 
-    return render_template("drug_search_results.html", returned_drugs = returned_drugs,
+
+    return render_template("drug_search_results.html", keywords=keywords,
+                                                        returned_drugs = returned_drugs,
                                                         brand = brand,
                                                         count = count,
                                                         manufacturer = manufacturer )
 
+
 @app.route("/rate_drug", methods=['POST', 'GET'])
 def get_result():
     """Show info about drug.
-
-    If a user is logged in, we will let them add drug feedbadk.
-    """
-
+    If a user is logged in, we will let them add drug feedbadk."""
 
     spl_set_id = request.values["spl_set_id"]
 
+    avg_score = db.session.query(db.func.avg(Rating.score)).filter_by(spl_set_id=spl_set_id).scalar()
 
-    # spl_set_id = request.form.get("spl_set_id", request.args["spl_set_id"])
+    comments = db.session.query(Rating.comment).filter_by(spl_set_id=spl_set_id).all()
 
+    num_headaches = Rating.query.filter(Rating.spl_set_id==spl_set_id).filter_by(headache=1).count()
+    num_body_aches = Rating.query.filter(Rating.spl_set_id==spl_set_id).filter_by(body_aches=1).count()
+    num_diarrhea = Rating.query.filter(Rating.spl_set_id==spl_set_id).filter_by(diarrhea=1).count()
+    num_constipation = Rating.query.filter(Rating.spl_set_id==spl_set_id).filter_by(constipation=1).count()
+    num_vomiting_nausea = Rating.query.filter(Rating.spl_set_id==spl_set_id).filter_by(vomiting_nausea=1).count()
+    num_moodiness = Rating.query.filter(Rating.spl_set_id==spl_set_id).filter_by(moodiness=1).count()
+    num_drowsiness = Rating.query.filter(Rating.spl_set_id==spl_set_id).filter_by(drowsiness=1).count()
+    num_disorientation = Rating.query.filter(Rating.spl_set_id==spl_set_id).filter_by(disorientation=1).count()
+    num_bloating_swelling = Rating.query.filter(Rating.spl_set_id==spl_set_id).filter_by(bloating_swelling=1).count()
+    num_skin_reactions = Rating.query.filter(Rating.spl_set_id==spl_set_id).filter_by(skin_reactions=1).count()
+    num_chills_sweating = Rating.query.filter(Rating.spl_set_id==spl_set_id).filter_by(chills_sweating=1).count()
+    num_dizziness = Rating.query.filter(Rating.spl_set_id==spl_set_id).filter_by(dizziness=1).count()
+    num_weight_gain = Rating.query.filter(Rating.spl_set_id==spl_set_id).filter_by(weight_gain=1).count()
+    num_weight_loss = Rating.query.filter(Rating.spl_set_id==spl_set_id).filter_by(weight_loss=1).count()
+
+    user_side_effects = [num_headaches, num_body_aches, num_diarrhea, num_constipation, num_vomiting_nausea, num_moodiness,num_drowsiness, num_disorientation, num_bloating_swelling, num_skin_reactions, num_chills_sweating, num_dizziness, num_weight_gain, num_weight_loss]
+
+    side_effect_list = ['headaches', 'bodyaches', 'diarrhea', 'constipation', 'vomiting_nausea', 'moodiness', 'drowsiness', 'disorientation', 'bloating_swelling', 'skin_reactions', 'chills_sweating', 'dizziness', 'weight_gain', 'weight_loss']
+
+    print "user side effects :", user_side_effects
+    print "side effect list:", side_effect_list
+
+    print "headaches", num_headaches
+    print "bodyaches", num_body_aches
 
     user_id = session.get("user_id")
+
+    user = User.get_user(user_id=user_id)
+    print user
+
+    if user is None: 
+        flash("Invalid MedDr ID")
+        return redirect("/login")
 
     if user_id:
         user_rating = Rating.query.filter_by(
@@ -127,31 +176,19 @@ def get_result():
     else:
         user_rating = None
 
-
-    # rating_scores = [r.score for r in spl_set_id.ratings]
-    # print rating_scores
-    # avg_rating = float(sum(rating_scores)) / len(rating_scores)
-
-    # db.session.query(...)   <-- query only these fields
-    #          db.func.avg(fld)    <--- get average of this field
-    #                      .scalar()    <--- return single field from single result, eg [(1,)] -> 1
-    avg_score = db.session(db.func.avg(Rating.score).query.filter_by(spl_set_id=spl_set_id.scalar()
-
-    print avg_score
-    # drug_ratings_sum = "Select CAST(AVG(score) AS INT) as average_scores From Ratings  Where spl_set_id = spl_set_id"
-
-
-
     drug = Drug.query.filter_by(spl_set_id=spl_set_id).first()
 
     if drug:
         session["spl_set_id"] = drug.spl_set_id
 
         return render_template("rate_drug.html",drug=drug,
-                                                user_id=user_id,
-                                                user_rating=user_rating
-                                                 )
-
+                                                user=user,
+                                                user_rating=user_rating,
+                                                avg_score=avg_score,
+                                                comments=comments, 
+                                                user_side_effects=user_side_effects, 
+                                                side_effect_list=side_effect_list
+                                                )
     else:
         search_openfda_by_spl_id(spl_set_id)
 
@@ -160,30 +197,28 @@ def get_result():
         session["spl_set_id"] = drug.spl_set_id
 
         return render_template("rate_drug.html",drug=drug,
-                                        user_id=user_id,
-                                        user_rating=user_rating
-                                                 )
+                                                user=user,
+                                                user_id=user_id,
+                                                user_rating=user_rating,
+                                                avg_score=avg_score,
+                                                comments=comments, 
+                                                user_side_effects=user_side_effects, 
+                                                side_effect_list=side_effect_list
+                                                )
 
 @app.route("/add_drug_feedback", methods=['POST'])
 def drug_details_process():
     """Add/edit a rating."""
 
     spl_set_id = session.get('spl_set_id')
-    print spl_set_id
 
     thisdrug = Drug.query.get(spl_set_id)
-    print thisdrug
 
     score = int(request.form["score"])
-    print score
 
     comment = request.form["comment"]
-    print comment 
 
     side_effect = request.form.getlist('side_effect')
-    print 'side effects: ', side_effect
-
-    
 
     user_id = session.get("user_id")
 
@@ -206,18 +241,8 @@ def drug_details_process():
     return redirect("/rate_drug?spl_set_id=%s" % spl_set_id)
 
 
-
 if __name__ == "__main__":
 
-    # We have to set debug=True here, since it has to be True at the point
-    # that we invoke the DebugToolbarExtension
-
-    # Do not debug for demo
     app.debug = True
-
     connect_to_db(app)
-
-    # Use the DebugToolbar
-    # DebugToolbarExtension(app)
-
     app.run(use_debugger=True, debug=app.debug)

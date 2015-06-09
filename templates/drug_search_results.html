@@ -1,35 +1,25 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<!-- ajax request to seperate route called /drugdata, will return jsonify(python dictorary)  -->
 
-
-
-<h1>There are {{ count }} drugs that match your search! </h1>
-
-<p> Drug Matches: </p>
-
-<!-- <p> {{ returned_drugs }} </p> -->
-
-
+<div><h3> meddr. found {{ count }} results for '{{ keywords}}': </h3> </div>
+<div>
 {% for key in returned_drugs %}
-	<h3> {{ brand }} manufactured by : {{ returned_drugs[key]["manufacturer_name"] }} </h3> 
+	<div> <h3> {{ brand }} manufactured by : {{ returned_drugs[key]["manufacturer_name"] }} </h3> </div>
 
-    <input type="button" class="ratedrug" value="Rate This Drug" data-onedrug="{{ returned_drugs[key]['spl_set_id']}}"> 
-        
+    <div><input type="button" class="ratedrug" value="Rate This Drug" data-onedrug="{{ returned_drugs[key]['spl_set_id']}}"></div>     
+        <div>
         <li> NDC: {{ returned_drugs[key]["product_ndc"] }} </li>
         <li> Brand Name: {{ returned_drugs[key]['brand_name'] }} </li>
         <li> Route of Administration: {{ returned_drugs[key]['route'] }} </li>
         <li> Generic Name: {{ returned_drugs[key]['generic_name'] }} </li>
-        <li> Product Type: {{ returned_drugs[key]['product_type'] }} </li>  
-        <li> SPL ID: {{ returned_drugs[key]['spl_set_id'] }}</li>
-        
+        <li> Product Type: {{ returned_drugs[key]['product_type'] }} </li>
+        </div> 
 {% endfor %}
+</div>
 
-<script>
-    
+<script>   
     $(".ratedrug").click(AddDrugToDB); 
-
 
     function AddDrugToDB(evt) {
 
@@ -48,7 +38,6 @@
         }).appendTo(form);
         $(form).submit();
     }
-
 </script>
 
 {% endblock %}

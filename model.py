@@ -11,7 +11,6 @@ class Drug(db.Model):
 
     __tablename__="drugs"
 
-    # drug_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     spl_set_id = db.Column(db.String(64), primary_key=True)
     manufacturer_name = db.Column(db.String(99999), nullable=False)
     product_type = db.Column(db.String(99999), nullable=False)
@@ -31,9 +30,6 @@ class Drug(db.Model):
         """Provide helpful representation when printed."""
         return "<spl_set_id=%s generic_name=%s brand_name=%s>" % (self.spl_set_id, self.generic_name, self.brand_name)
 
-        # return "<Drug_id=%s spl_set_id=%s manufacturer_name=%s product_type=%s description=%s dosage_and_administration=%s route=%s generic_name=%s brand_name=%s substance_name=%s product_ndc=%s adverse_reactions=%s how_supplied=%s indications_and_usage=%s >" % (self.drug_id, self.spl_set_id, self.manufacturer_name, self.product_type, self.description, self.dosage_and_administration, self.route, self.generic_name, self.brand_name, self.substance_name, self.product_ndc, self.adverse_reactions, self.how_supplied, self.indications_and_usage)
-
-
 class User(db.Model):
     """User of memed website."""
 
@@ -45,10 +41,18 @@ class User(db.Model):
     age = db.Column(db.Integer, nullable=True)
     zipcode = db.Column(db.String(15), nullable=True)
 
+    @staticmethod
+    def get_user(user_id):
+        user = User.query.filter_by(user_id=user_id).first()
+        print  user
+        print "in get_user static method"
+        return user
+
+
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<User user_id=%s email=%s>" % (self.user_id, self.email)
+        return "<User user_id=%s email=%s>" % (self.user_id, self.meddr_username)
 
 
 class Rating(db.Model):
@@ -61,7 +65,7 @@ class Rating(db.Model):
     spl_set_id = db.Column(db.String(64), db.ForeignKey('drugs.spl_set_id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     score = db.Column(db.Integer)
-    comment = db.Column(db.String, nullable= False)
+    comment = db.Column(db.String, nullable=True)
     headache = db.Column(db.Integer, default=0)
     stomach_pain = db.Column(db.Integer, default=0)
     body_aches = db.Column(db.Integer, default=0)
@@ -143,23 +147,19 @@ class Rating(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<Rating rating_id=%s spl_set_id=%s user_id=%s score=%s>" % (
-            self.rating_id, self.spl_set_id, self.user_id, self.score)
+        return "<Rating rating_id=%s spl_set_id=%s user_id=%s score=%s>" % (self.rating_id, self.spl_set_id, self.user_id, self.score)
 
 
 
 def connect_to_db(app):
     """Connect the database to our Flask app."""
 
-    # Configure to use our SQLite database
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///drugsfromopenfda.db'
     db.app = app
     db.init_app(app)
 
 
 if __name__ == "__main__":
-    # As a convenience, if we run this module interactively, it will leave
-    # you in a state of being able to work with the database directly.
 
     from server import app
     connect_to_db(app)
@@ -168,49 +168,6 @@ if __name__ == "__main__":
 
 
 
-# import requests
-
-# # jinja, render template
-
-# @app.route("/")
-# def show_form():
-
-# 	return render_template("blah form.html")
 
 
-# @app.route("/", methods=["POST"])
-# def get_indications():
-
-# 	brand_name = cookie
-
-
-# 	# request.form.(name of field)
-
-# 	# payload = {'limit' : '100', 'brand_name' : '"viagra"'}
-
-
-
-# 	r = requests.get('https://api.fda.gov/drug/label.json?api_key=DWhqkP2B0GiId0OAuz15UIAvZharbqMrComhRBG1&search=brand_name:%s&limit=200' %brand_name)
-
-# 	# search=brand_name:&limit=300" %(userinput) 
-
-
-
-
-# 	results = r.json()
-
-# 	indications = results[0]['indications_and_usage'][0]
-
-# 	return render_template("blah.html",indications=indications)
-
-
-
-
-# print r.url	
-
-
-	
-
-
-# write a function that will take in a brand name and print out the indications and usage for each result from the openFDA api
 

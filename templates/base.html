@@ -2,26 +2,60 @@
 <html lang="en">
 <head>
     <script src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
-    <title>meddr.</title>
-
+	<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <!-- <link rel="stylesheet" href="/static/styles.css"> -->
+  <!-- <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700,300' rel='stylesheet' type='text/css'> -->
+<!--   <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,500' rel='stylesheet' type='text/css'>
+ -->  {% block head %} 
+    <title>{% block title %}{% endblock %} | meddr. </title>
+  {% endblock %}
 
 </head>
 <body>
 
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">meddr.</a>
+    </div>
 
-  {% for flash in get_flashed_messages() %}
-    {{ flash }}
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+      	{% if "user_id" in session %}
+        <li><a href="/user">{{ session['user_name'] }}'s Profile</a></li>
+        <li><a href="/logout">Logout</a></li>
+        <li>{{ meddr }}</li>
+        {% else %}
+        <li><a href="/register">Register</a></li>
+        <li><a href="/login">Login</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+	<!-- Show flashed messages -->
+    {% with messages = get_flashed_messages() %}
+      {% for message in messages %}
+          <div class="alert alert-warning">{{ message }}</div>
+      {% endfor %}
+    {% endwith %}
 
-  {% endfor %}
-
-  {% block content %}
-      Put your body here.
-  {% endblock %}
+	{% block content %}
+		put content here
+	{% endblock %}
 
 
-<!-- <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script> -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+
 
 </body>
 </html>
