@@ -141,6 +141,7 @@ def get_result():
     num_diarrhea = Rating.query.filter(Rating.spl_set_id==spl_set_id).filter_by(diarrhea=1).count()
     num_constipation = Rating.query.filter(Rating.spl_set_id==spl_set_id).filter_by(constipation=1).count()
     num_vomiting_nausea = Rating.query.filter(Rating.spl_set_id==spl_set_id).filter_by(vomiting_nausea=1).count()
+    num_irritable = Rating.query.filter(Rating.spl_set_id==spl_set_id).filter_by(irritable=1).count()
     num_moodiness = Rating.query.filter(Rating.spl_set_id==spl_set_id).filter_by(moodiness=1).count()
     num_drowsiness = Rating.query.filter(Rating.spl_set_id==spl_set_id).filter_by(drowsiness=1).count()
     num_disorientation = Rating.query.filter(Rating.spl_set_id==spl_set_id).filter_by(disorientation=1).count()
@@ -151,12 +152,15 @@ def get_result():
     num_weight_gain = Rating.query.filter(Rating.spl_set_id==spl_set_id).filter_by(weight_gain=1).count()
     num_weight_loss = Rating.query.filter(Rating.spl_set_id==spl_set_id).filter_by(weight_loss=1).count()
 
-    user_side_effects = [num_headaches, num_body_aches, num_diarrhea, num_constipation, num_vomiting_nausea, num_moodiness,num_drowsiness, num_disorientation, num_bloating_swelling, num_skin_reactions, num_chills_sweating, num_dizziness, num_weight_gain, num_weight_loss]
+    user_side_effects = [num_headaches, num_body_aches, num_diarrhea, num_constipation, num_vomiting_nausea, num_irritable, num_moodiness,num_drowsiness, num_disorientation, num_bloating_swelling, num_skin_reactions, num_chills_sweating, num_dizziness, num_weight_gain, num_weight_loss]
 
-    side_effect_list = ['headaches', 'bodyaches', 'diarrhea', 'constipation', 'vomiting_nausea', 'moodiness', 'drowsiness', 'disorientation', 'bloating_swelling', 'skin_reactions', 'chills_sweating', 'dizziness', 'weight_gain', 'weight_loss']
+    side_effect_list = ['headaches', 'bodyaches', 'diarrhea', 'constipation', 'vomiting_nausea','irritable', 'moodiness', 'drowsiness', 'disorientation', 'bloating_swelling', 'skin_reactions', 'chills_sweating', 'dizziness', 'weight_gain', 'weight_loss']
+    
+    print "side effect list:", side_effect_list
+
 
     print "user side effects :", user_side_effects
-    print "side effect list:", side_effect_list
+   
 
     print "headaches", num_headaches
     print "bodyaches", num_body_aches
@@ -171,8 +175,7 @@ def get_result():
         return redirect("/login")
 
     if user_id:
-        user_rating = Rating.query.filter_by(
-            spl_set_id=spl_set_id, user_id=user_id).first()
+        user_rating = Rating.query.filter_by(spl_set_id=spl_set_id, user_id=user_id).first()
     else:
         user_rating = None
 

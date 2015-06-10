@@ -72,6 +72,7 @@ class Rating(db.Model):
     diarrhea = db.Column(db.Integer, default=0)
     constipation = db.Column(db.Integer, default=0)
     vomiting_nausea = db.Column(db.Integer, default=0)
+    irritable = db.Column(db.Integer, default=0)
     moodiness = db.Column(db.Integer, default=0)
     drowsiness = db.Column(db.Integer, default=0)
     disorientation = db.Column(db.Integer, default=0)
@@ -105,6 +106,8 @@ class Rating(db.Model):
             self.constipation = 1
         elif side_effect == "vomiting_nausea":
             self.vomiting_nausea = 1
+        elif side_effect == "irritable":
+            self.irritable = 1
         elif side_effect == "moodiness":
             self.moodiness = 1
         elif side_effect == "drowsiness":
@@ -133,6 +136,7 @@ class Rating(db.Model):
         self.diarrhea = 0
         self.constipation = 0
         self.vomiting_nausea = 0
+        self.irritable = 0
         self.moodiness = 0
         self.drowsiness = 0
         self.disorientation = 0

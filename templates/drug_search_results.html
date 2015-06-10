@@ -2,18 +2,18 @@
 {% block content %}
 
 
-<div><h3> meddr. found {{ count }} results for '{{ keywords}}': </h3> </div>
+<div class><h3> meddr. found {{ count }} results for '{{ keywords}}': </h3> </div>
 <div>
 {% for key in returned_drugs %}
 	<div> <h3> {{ brand }} manufactured by : {{ returned_drugs[key]["manufacturer_name"] }} </h3> </div>
 
-    <div><input type="button" class="ratedrug" value="Rate This Drug" data-onedrug="{{ returned_drugs[key]['spl_set_id']}}"></div>     
+    <div><input type="button" class="ratedrug" value="Drug Feedback" data-onedrug="{{ returned_drugs[key]['spl_set_id']}}"></div>     
         <div>
-        <li> NDC: {{ returned_drugs[key]["product_ndc"] }} </li>
-        <li> Brand Name: {{ returned_drugs[key]['brand_name'] }} </li>
-        <li> Route of Administration: {{ returned_drugs[key]['route'] }} </li>
-        <li> Generic Name: {{ returned_drugs[key]['generic_name'] }} </li>
-        <li> Product Type: {{ returned_drugs[key]['product_type'] }} </li>
+        <li> National Drug Code : {{ returned_drugs[key]["product_ndc"] }} </li>
+        <li> Brand Name : {{ returned_drugs[key]['brand_name'] }} </li>
+        <li> Route of Administration : {{ returned_drugs[key]['route'] }} </li>
+        <li> Generic Route Name : {{ returned_drugs[key]['generic_name'] }} </li>
+        <li> Intended User : {{ returned_drugs[key]['product_type'] }} </li>
         </div> 
 {% endfor %}
 </div>

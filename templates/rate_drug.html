@@ -1,35 +1,42 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h3> {{user.meddr_username}}
 
-<h1> meddr. feedback for : {{ drug.brand_name }} </h1>
+<h3> {{ drug.brand_name }}</h3> 
+<h5> Manufacturered by: {{ drug.manufacturer_name }} </h5>
+
+
+<div id="side_effects" style="width:100%; height:400px;"></div>
 
 <p>Average rating: {{ avg_score }}</p>
 
+
 {% if "user_id" in session %}
-	  <h2>Your Feedback for this Drug:</h2>
+	<h4> Your Feedback: </h4>
 	{% if user_rating %}
 	    <p>You currently rate this a {{ user_rating.score }}</p>
 	{% endif %}
+
+
+<h4> Comments for this drug: </h4>
 		
 {% for comment_tuple in comments: %}
 	
 	{{ comment_tuple[0] }}
         
-{% endfor %}
+	{% endfor %}
 
 
 		<form action="/add_drug_feedback" method="POST">
-			<div>
-			  <label>Rating:
-
-			  	<input type="radio" name="score" value="1">1  
-  				<input type="radio" name="score" value="2">2
-  				<input type="radio" name="score" value="3">3
-  				<input type="radio" name="score" value="4">4
-  				<input type="radio" name="score" value="5">5
-			  </label>
+			<div class="row drug-score">
+				<fieldset class="rating">
+				    <legend>Please rate:</legend>
+				    <input type="radio" id="star5" name="score" value="5" /><label for="star5" title="Rocks!">5 stars</label>
+				    <input type="radio" id="star4" name="score" value="4" /><label for="star4" title="Pretty good">4 stars</label>
+				    <input type="radio" id="star3" name="score" value="3" /><label for="star3" title="Meh">3 stars</label>
+				    <input type="radio" id="star2" name="score" value="2" /><label for="star2" title="Kinda bad">2 stars</label>
+				    <input type="radio" id="star1" name="score" value="1" /><label for="star1" title="Sucks big time">1 star</label>
+				</fieldset>
 			</div>
 
 
@@ -40,43 +47,106 @@
 			</div>
 
 			Side Effects: 
-			<div>
+			<div class="row drug-rating">
+			<h4>Side Effects:</h4>
+				<div class="col-md-3"> <h4> Pain </h4>
 				<input type="checkbox" name="side_effect" value="headache"> Headache <br>
 				<input type="checkbox" name="side_effect" value="stomach_pain"> Stomach Pain <br>
 				<input type="checkbox" name="side_effect" value="body_aches"> Body Aches or Cramps <br>
+				</div>
+				<div class="col-md-3">  <h4> Tummy </h4> 
 				<input type="checkbox" name="side_effect" value="diarrhea"> Diarrhea <br>
 				<input type="checkbox" name="side_effect" value="constipation"> Constipation <br>
 				<input type="checkbox" name="side_effect" value="vomiting_nausea"> Nausea or Vomiting <br>
+				</div>
+				<div class="col-md-3">  <h4> Feeling </h4>
+				<input type="checkbox" name="side_effect" value="irritable"> Irritable<br>
 				<input type="checkbox" name="side_effect" value="moodiness"> Moodiness <br>
 				<input type="checkbox" name="side_effect" value="drowsiness"> Drowsiness <br>
 				<input type="checkbox" name="side_effect" value="disorientation"> Disorientation <br>
+				</div>
+				<div class="col-md-3"> <h4> Full Body </h4>
 				<input type="checkbox" name="side_effect" value="bloating_swelling"> Bloating or Swelling <br>
 				<input type="checkbox" name="side_effect" value="skin_reactions"> Skin Reactions <br>
 				<input type="checkbox" name="side_effect" value="chills_sweating"> Chills or Sweating <br>
 				<input type="checkbox" name="side_effect" value="dizziness"> Dizziness <br>
 				<input type="checkbox" name="side_effect" value="weight_gain"> Weight Gain <br>
 				<input type="checkbox" name="side_effect" value="weight_loss"> Weight Loss <br>
-
-			</div>		
+				</div>
+			</div>			
 			<input type="submit" value="Submit your Drug Feedback">
 		</form>
 {% endif %}
 
-<div>
-<h4> Manufacturered By: {{ drug.manufacturer_name  }} </h4>
-<h4> National Drug Code: {{ drug.product_ndc }} </h4>
-<h4> Generic Drug Name: {{ drug.generic_name }} </h4>
-<h4> Brand Name: {{ drug.brand_name }} </h4>
-<h4> Chemical Name: {{ drug.substance_name }} </h4>
+<div class="row drug-info">
+	<div class="col-xs-6">
+		<h4> Manufacturered By: {{ drug.manufacturer_name  }} </h4>
+		<h4> National Drug Code: {{ drug.product_ndc }} </h4>
+		<h4> Generic Drug Name: {{ drug.generic_name }} </h4>
+		<h4> Brand Name: {{ drug.brand_name }} </h4>
+	</div>
+	<div class-"col-xs-6">
+		<h4> Chemical Name: {{ drug.substance_name }} </h4>
+		<h4> Indicated Route: {{ drug.route }} </h4>
+		<h4> Type of Product: {{ drug.product_type }} </h4>
+	</div>
+</div>
 
-<h4> Indicated Route: {{ drug.route }} </h4>
-<h4> Type of Product: {{ drug.product_type }} </h4>
 <h4> Drug Description : {{ drug.description }} </h4>
 <h4> How drug is supplied by Manufacturer: {{ drug.how_supplied }} </h4>
 <h4> Dosage and Administration: {{ drug.dosage_and_administration }} </h4>
 <h4> Indications and Usage for this drug : {{ drug.indications_and_usage }} </h4>
 <h4>  Reported Reactions: {{ drug.adverse_reactions| truncate(100) }} </h4>
-</div>
+
+
+<script>
+
+    var side_effect_list = {{ side_effect_list|tojson|safe }};
+    // categories = JSON.parse(categories)
+    // console.log(categories)
+
+	console.log(side_effect_list)
+
+$('#side_effects').highcharts({
+        chart: {
+            type: 'column',
+            style: {
+                'font-family': "'Raleway', sans-serif"
+            },
+            backgroundColor:'rgba(255, 255, 255, 0.1)',
+        },
+        colors: {
+    	radialGradient: { cx: 0.5, cy: 0.5, r: 0.5 },
+    	stops: [
+       [0, '#003399'],
+       [1, '#3366AA']
+    	]
+		},
+        title: {
+            text: 'Side Effects for {{ drug.brand_name }}'
+        },
+        xAxis: {
+            categories: side_effect_list 
+        },
+        tooltip: {
+            valueDecimals: 0,
+            pointFormat: "{point.y} people experienced this"
+        },
+        legend: {
+            enabled: false
+        },
+        credits: {
+            enabled: false
+        },
+        series: [{
+            data: {{ user_side_effects }}
+        }]
+    });
+
+</script>
+
+
+
 
 
 {% endblock %}
