@@ -12,9 +12,9 @@
 
 
 {% if "user_id" in session %}
-	<h4> Your Feedback: </h4>
+	<h4></h4>
 	{% if user_rating %}
-	    <p>You currently rate this a {{ user_rating.score }}</p>
+	    <p>Your current rating for this drug is {{ user_rating.score }}.</p>
 	{% endif %}
 
 
@@ -22,8 +22,8 @@
 		
 {% for comment_tuple in comments: %}
 	
-	{{ comment_tuple[0] }}
-        
+	<br> {{ comment_tuple[0] }} <br>
+    
 	{% endfor %}
 
 
@@ -39,14 +39,19 @@
 				</fieldset>
 			</div>
 
+			<br>
 
-			<div>
-			  <label>Comments:
-			      <input type="text" name="comment">
+
+			<div class="row drug-comment">
+			  <label><h4>Comments:</h4>
+			      <input type="text" name="comment" height="900px" size="50%"> 
 			  </label>
+			  <br>
 			</div>
+<br>
+<br>
 
-			Side Effects: 
+			
 			<div class="row drug-rating">
 			<h4>Side Effects:</h4>
 				<div class="col-md-3"> <h4> Pain </h4>
@@ -73,30 +78,49 @@
 				<input type="checkbox" name="side_effect" value="weight_gain"> Weight Gain <br>
 				<input type="checkbox" name="side_effect" value="weight_loss"> Weight Loss <br>
 				</div>
-			</div>			
+			</div>	
+			<br>
+		
 			<input type="submit" value="Submit your Drug Feedback">
+
 		</form>
 {% endif %}
 
+<br>
+<br>
+
+
 <div class="row drug-info">
 	<div class="col-xs-6">
-		<h4> Manufacturered By: {{ drug.manufacturer_name  }} </h4>
-		<h4> National Drug Code: {{ drug.product_ndc }} </h4>
-		<h4> Generic Drug Name: {{ drug.generic_name }} </h4>
-		<h4> Brand Name: {{ drug.brand_name }} </h4>
+		<h5> Manufacturered By: {{ drug.manufacturer_name  }} </h5>
+		<h5> National Drug Code: {{ drug.product_ndc }} </h5>
+		<h5> Generic Drug Name: {{ drug.generic_name }} </h5>
+		<h5> Brand Name: {{ drug.brand_name }} </h5>
 	</div>
 	<div class-"col-xs-6">
-		<h4> Chemical Name: {{ drug.substance_name }} </h4>
-		<h4> Indicated Route: {{ drug.route }} </h4>
-		<h4> Type of Product: {{ drug.product_type }} </h4>
+		<h5> Chemical Name: {{ drug.substance_name }} </h5>
+		<h5> Indicated Route: {{ drug.route }} </h5>
+		<h5> Type of Product: {{ drug.product_type }} </h5>
 	</div>
 </div>
 
-<h4> Drug Description : {{ drug.description }} </h4>
-<h4> How drug is supplied by Manufacturer: {{ drug.how_supplied }} </h4>
-<h4> Dosage and Administration: {{ drug.dosage_and_administration }} </h4>
-<h4> Indications and Usage for this drug : {{ drug.indications_and_usage }} </h4>
-<h4>  Reported Reactions: {{ drug.adverse_reactions| truncate(100) }} </h4>
+<br><br>
+
+<div class="row drug-spl"><h5> Drug Description : {{ drug.description }} </h5></div><br>
+<br>
+
+<div class="row drug-spl"><h5> How drug is supplied by Manufacturer: {{ drug.how_supplied| truncate(1000)  }} </h5></div><br>
+<br>
+
+<div class="row drug-spl"><h5> Dosage and Administration: {{ drug.dosage_and_administration| truncate(1000)  }} </h5></div><br>
+<br>
+
+<div class="row drug-spl"><h5> Indications and Usage for this drug : {{ drug.indications_and_usage| truncate(1000)  }} </h5></div><br>
+<br>
+
+<div class="row drug-spl"><h5> Reported Reactions: {{ drug.adverse_reactions| truncate(1000) }} </h5></div><br>
+<br>
+
 
 
 <script>
@@ -111,7 +135,8 @@ $('#side_effects').highcharts({
         chart: {
             type: 'column',
             style: {
-                'font-family': "'Raleway', sans-serif"
+                'font-family': "'Raleway', sans-serif",
+                'font-size' : "12px"
             },
             backgroundColor:'rgba(255, 255, 255, 0.1)',
         },
