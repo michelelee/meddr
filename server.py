@@ -14,19 +14,21 @@ app.jinja_env.undefined = StrictUndefined
 
 @app.route('/')
 def index():
+    """This is the page an org. or campaign sees after login. The organization can
+    see their current stream of donations - visualized by tables/gallery style. The
+    organization is able to send a text message to all users regarding stated goals."""
 
-   """This is the page an org. or campaign sees after login. The organization can
-   see their current stream of donations - visualized by tables/gallery style. The
-   organization is able to send a text message to all users regarding stated goals."""
+    return render_template('homepage.html')
 
-   return render_template('homepage.html')
 
 @app.route('/donor_landing', methods=['GET'])
-  def show_donor_landing():
+def show_donor_landing():
+    """This will route the donor to the donor landing page"""
+    
     return render_template('donor_landing.html')
 
 @app.route('/org_landing', methods=['GET', 'POST'])
-  def show_org_land():
+def show_org_land():
     org_name = Org.query.filter_by(org_name='The Org').first()
     campaign = Campaign.query.filter_by(name='Coding for Kids').first()
     return render_template('org_landing.html', org_name=org_name, campaign1=campaign1, campaign2=campaign2, campaign3=campaign3)
