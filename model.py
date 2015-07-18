@@ -1,4 +1,4 @@
-"""Model and databasefor memed"""
+"""Model and database"""
 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import CheckConstraint
@@ -33,6 +33,7 @@ class Org(db.Model):
     password = db.Column(db.String(64), nullable=True)
     org_url = db.Column(db.String(64), nullable=True)
 
+
     def __repr__(self):
         return "<Org: org_name=%s>" % (self.org_name)
 
@@ -65,3 +66,27 @@ class Campaign(db.Model):
 
 
 
+##############################################################################
+# Helper functions
+
+def connect_to_db(app):
+    """Connect the database to our Flask app."""
+
+    # Configure to use our SQLite database
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///generositree.db'
+    db.app = app
+    db.init_app(app)
+    # with app.app_context():
+    #     # Extensions like Flask-SQLAlchemy now know what the "current" app
+    #     # is while within this block. Therefore, you can now run........
+    #     db.create_all()
+    #     print "DB created"
+
+
+if __name__ == "__main__":
+    # As a convenience, if we run this module interactively, it will leave
+    # you in a state of being able to work with the database directly.
+
+    from server import app
+    connect_to_db(app)
+    print "Connected to DB."

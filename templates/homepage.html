@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+
+	<div class="header"><h1>GenerosiTree.</h1></div>
+
+
+    <ul >
+<!--         {% if "user_id" in session %}
+        <li><a href="/user">Profile</a></li>
+        <li><a href="/logout">Logout</a></li>
+        {% else %}
+        <li><a href="/register">Register</a></li>
+        <li><a href="/login">Login</a></li>
+        {% endif %}
+ -->
+    </ul>
+
+
+	<h3>Search by Org:</h3>
+
+	<form action="donor_landing" method="POST">
+
+	<label> 
+		<input type="text" name="orgsearch">
+	</label>
+  <input type="submit" value="find">
+
+	</form>
+
+
+{% endblock %}
