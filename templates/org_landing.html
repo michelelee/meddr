@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Welcome to the {{ org_name.name }} Dashboard</h1>
+
+{{ campaign1 }}
+
+{{ campaign2 }}
+
+{{ campaign3 }}
+
+<h3>Reach out to connect to your donors</h3>
+
+<button type="button" id="onclick">Text all donors</button>
+
+<form method="post" action="message_input">
+	<label>
+		<input type="text" name="message">
+	</label>
+</form>
+
+<script type="text/javascript">
+	
+	$("#onclick").click(function() {
+		$("#writemessage").css("display", "block");
+	});
+</script>
+{% endblock %}
