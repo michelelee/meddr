@@ -23,13 +23,13 @@ def index():
 
 @app.route('/donor_landing', methods=['GET'])
   def show_donor_landing():
-    return render_template('donor_landing')
+    return render_template('donor_landing.html')
 
 @app.route('/org_landing', methods=['GET', 'POST'])
   def show_org_land():
     org_name = Org.query.filter_by(org_name='The Org').first()
     campaign = Campaign.query.filter_by(name='Coding for Kids').first()
-    return render_template('org_landing', org_name=org_name, campaign1=campaign1, campaign2=campaign2, campaign3=campaign3)
+    return render_template('org_landing.html', org_name=org_name, campaign1=campaign1, campaign2=campaign2, campaign3=campaign3)
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point
