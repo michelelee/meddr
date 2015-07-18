@@ -1,13 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Welcome to the {{ org_name.name }} Dashboard</h1>
-
-{{ campaign1 }}
-
-{{ campaign2 }}
-
-{{ campaign3 }}
 
 <h3>Reach out to connect to your donors</h3>
 
@@ -19,10 +12,93 @@
 	</label>
 </form>
 
+
+<div id="donations_over_time" style="width:100%; height:400px;"></div>
+
+
 <script type="text/javascript">
 	
 	$("#onclick").click(function() {
 		$("#writemessage").css("display", "block");
 	});
+
+
+$.get("/donations_over_time",
+    donationsOverTime)
+
+function donationsOverTime (result) {
+    console.log(result)
+    var donate_times = []
+    var total_progress = 0
+    _.each(result.donations, function(donation) {
+        total_progress = total_progress + donation.donation_amt
+        var donated_at = donation.donated_at
+        donated_at = new Date(donated_at)
+        console.log(donated_at)
+        time = Date.UTC(donated_at.getFullYear(), 
+                        donated_at.getMonth(), 
+                        donated_at.getDate())
+        coordinates.push([time, total_progress])
+    })
+
+    donationsOverTimeChart
+}
+
+$(function donationsOverTimeChart() {
+    $('#donations_over_time').highcharts({
+        chart: {
+            type: 'area'
+        },
+        title: {
+            text: 'Donations Over Time'
+        },
+        xAxis: {
+            allowDecimals: false,
+            labels: {
+                formatter: function () {
+                    return this.value; // clean, unformatted number for year
+                }
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'Donations towards the ' + campaign + "campaign"
+            },
+            labels: {
+                formatter: function () {
+                    return this.value;
+                }
+            }
+        },
+        tooltip: {
+            pointFormat: '{series.name} produced <b>{point.y:,.0f}</b><br/>warheads in {point.x}'
+        },
+        plotOptions: {
+            area: {
+                pointStart: 1940,
+                marker: {
+                    enabled: false,
+                    symbol: 'circle',
+                    radius: 2,
+                    states: {
+                        hover: {
+                            enabled: true
+                        }
+                    }
+                }
+            }
+        },
+        series: [{
+            name: 'USA',
+            data: 
+        // }, 
+        // {
+        //     name: 'USSR/Russia',
+        //     data: 
+        }]
+    });
+});
+
+
 </script>
 {% endblock %}
