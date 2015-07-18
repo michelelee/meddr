@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+
+	<div class="header">meddr.</div>
+
+
+    <ul >
+<!--         {% if "user_id" in session %}
+        <li><a href="/user">Profile</a></li>
+        <li><a href="/logout">Logout</a></li>
+        {% else %}
+        <li><a href="/register">Register</a></li>
+        <li><a href="/login">Login</a></li>
+        {% endif %}
+ -->
+    </ul>
+
+
+	<h3>Search by Drugname:</h3>
+
+	<form action="/drug_search_results" method="POST">
+
+	<label> 
+		<input type="text" name="drugname_keywords">
+	</label>
+  <input type="submit">
+
+	</form>
+
+
+{% endblock %}
