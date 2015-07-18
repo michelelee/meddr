@@ -27,6 +27,7 @@ def show_donor_landing():
     
     return render_template('donor_landing.html')
 
+
 @app.route('/org_landing', methods=['GET', 'POST'])
 def show_org_land():
     org_name = Org.query.filter_by(org_name='The Org').first()
@@ -38,7 +39,7 @@ if __name__ == "__main__":
     # that we invoke the DebugToolbarExtension
     app.debug = True
     app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-
+ 
     connect_to_db(app)
 
     # Use the DebugToolbar
