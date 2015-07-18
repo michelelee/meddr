@@ -45,6 +45,7 @@ class Donation(db.Model):
 
     donation_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     donated_at = db.Column(db.DateTime(64), nullable=True)
+    donation_amt = db.Column(db.Float)
     donor_id = db.Column(db.Integer, db.ForeignKey("donors.donor_id"))
     org_id = db.Column(db.Integer, db.ForeignKey("orgs.org_id"))
     campaign_id = db.Column(db.Integer, db.ForeignKey("campaigns.campaign_id"))
@@ -59,6 +60,7 @@ class Campaign(db.Model):
     __tablename__ = "campaigns"
 
     campaign_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    campaign_name = db.Column(db.String(500))
     target_amt = db.Column(db.Float, nullable = False)
     description = db.Column(db.String(99999))
     issue_area = db.Column(db.String(100))
