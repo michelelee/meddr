@@ -19,7 +19,8 @@ def index():
    see their current stream of donations - visualized by tables/gallery style. The
    organization is able to send a text message to all users regarding stated goals."""
 
-   return render_template('base.html')
+   return render_template('homepage.html')
+
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point
