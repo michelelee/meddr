@@ -18,15 +18,16 @@ class Donor(db.Model):
     phone = db.Column(db.String(10), nullable=False)
     zipcode = db.Column(db.String(15), nullable=True)
     jobtitle = db.Column(db.String(99999), nullable=False)
+    political_aff = db.Column(db.String(99999), nullable=False)
 
     def __repr__(self):
         """Provide helpful representation when printed."""
-        return "<spl_set_id=%s generic_name=%s brand_name=%s>" % (self.spl_set_id, self.generic_name, self.brand_name)
+        return "<donor_id=%s name=%s jobtitle=%s>" % (self.donor_id, self.name, self.jobtitle)
 
 class Org(db.Model):
     """User of memed website."""
 
-    __tablename__ = "users"
+    __tablename__ = "orgs"
 
     org_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     org_name = db.Column(db.String(64), nullable=True)
@@ -37,29 +38,21 @@ class Org(db.Model):
     @staticmethod
     def get_user(org_id):
         user = User.query.filter_by(org_id=org_id).first()
-        print  user
+        print  org_id
         print "in get_user static method"
-        return user
+        return org_id
 
 
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<User user_id=%s email=%s>" % (self.user_id, self.meddr_username)
+        return "<User =%s email=%s>" % (self.org_id, self.meddr_username)
 
-
-class Rating(db.Model):
-    """Rating of a drug by a user."""
-
-    __tablename__ = "ratings"
+ 
 
 
 
 
-    __table_args__ = (CheckConstraint(score.in_(range(1, 11))), )
 
-    user = db.relationship("User",
-                           backref=db.backref("ratings", order_by=rating_id))
 
-    drug = db.relationship("Drug",
-                            backref=db.backref("ratings", order_by=rating_id))
+ 
