@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<h3>Reach out to connect to your donors</h3>
+
+<button type="button" id="dialog">Text all donors</button>
+<div id="dialog" title="Message to Donors"></div>
+
+<form method="post" action="message_input">
+	<label>Write a message to your donors (limit to 400 characters)
+		<input type="text" name="message" maxlength="400">
+	</label>
+	<input type="submit" class="btn btn-primary btn-lg" value="Submit">
+</form>
+
+<div id="donations_over_time" style="width:100%; height:400px;"></div>
+
+
+<script>
+
+
+$.get("/donations_over_time",
+    donationsOverTime)
+
+function donationsOverTime (result) {
+    var coordinates1 = []
+    var total_progress1 = 0
+    var coordinates2 = []
+    var total_progress2 = 0
+    var coordinates3 = []
+    var total_progress3 = 0
+    _.each(result.donations, function(donation) {
+        if (donation.campaign_id == 1) {
+          var campaign1 = "STEM Program for Girls"
+          total_progress1 = total_progress1 + donation.donation_amt
+          var donated_at = donation.donated_at
+          donated_at = new Date(donated_at)
+          time = Date.UTC(donated_at.getFullYear(), 
+                          donated_at.getMonth(), 
+                          donated_at.getDate())
+          coordinates1.push([time, total_progress1])
+        };
+        if (donation.campaign_id == 2) {
+          var campaign2 = "Hour of Code"
+          total_progress2 = total_progress2 + donation.donation_amt
+          var donated_at = donation.donated_at
+          donated_at = new Date(donated_at)
+          time = Date.UTC(donated_at.getFullYear(), 
+                          donated_at.getMonth(), 
+                          donated_at.getDate())
+          coordinates2.push([time, total_progress2])
+        }
+        if (donation.campaign_id == 3) {
+          var campaign3 = "Road to Higher Education"
+          total_progress3 = total_progress3 + donation.donation_amt
+          var donated_at = donation.donated_at
+          donated_at = new Date(donated_at)
+          time = Date.UTC(donated_at.getFullYear(), 
+                          donated_at.getMonth(), 
+                          donated_at.getDate())
+          coordinates3.push([time, total_progress3])
+        }
+    })
+
+    function donationsOverTimeChart() {
+      console.log("here")
+        $('#donations_over_time').highcharts({
+            chart: {
+                type: 'area'
+            },
+            title: {
+                text: 'Donations Over Time'
+            },
+            xAxis: {
+                allowDecimals: false,
+                labels: {
+                    formatter: function () {
+                        return this.value; // clean, unformatted number for year
+                    }
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Donations over time, by campaign'
+                },
+                labels: {
+                    formatter: function () {
+                        return this.value;
+                    }
+                }
+            },
+            tooltip: {
+                pointFormat: '{series.name} has collected $<b>{point.y}</b>'
+            },
+            plotOptions: {
+                area: {
+                    pointStart: 1940,
+                    marker: {
+                        enabled: false,
+                        symbol: 'circle',
+                        radius: 2,
+                        states: {
+                            hover: {
+                                enabled: true
+                            }
+                        }
+                    }
+                }
+            },
+            series: [{
+                name: campaign1,
+                data: coordinates1
+            }, 
+            {
+                name: campaign2,
+                data: coordinates2
+            },
+            {
+                name: campaign3,
+                data: coordinates3
+            }]
+        });
+    };
+  };
+
+
+$("#dialog").dialog({ autoOpen: false});
+$("#opener").click(function() {
+$("#dialog").dialog("open");
+});
+</script>
+{% endblock %}

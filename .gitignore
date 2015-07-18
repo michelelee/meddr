@@ -1,5 +1,12 @@
+<<<<<<< HEAD
 env/
 *.pyc
 *.db
 .DS_Store
 secrets.txt
+=======
+env
+secrets.sh
+
+*.pyc
+>>>>>>> 764231e1e216873873426911f65ba343754d2a3a
