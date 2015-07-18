@@ -26,7 +26,7 @@ def show_donor_landing():
     """This will route the donor to the donor landing page"""
     
     return render_template('donor_landing.html')
-    
+
 
 @app.route('/org_landing', methods=['GET', 'POST'])
 def show_org_land():
@@ -39,7 +39,7 @@ if __name__ == "__main__":
     # that we invoke the DebugToolbarExtension
     app.debug = True
     app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-
+ 
     connect_to_db(app)
 
     # Use the DebugToolbar
