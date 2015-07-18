@@ -34,6 +34,28 @@ def show_org_land():
     campaign = Campaign.query.filter_by(name='Coding for Kids').first()
     return render_template('org_landing.html', org_name=org_name, campaign1=campaign1, campaign2=campaign2, campaign3=campaign3)
 
+
+
+@app.route("/donations_over_time", methods = ['GET'])
+def get_chart_data():
+
+    info_needed = (donation.donation_amt,
+                    donation.donated_at,
+                    donation.campaign_id)
+
+    donation_objects = Donation.query.all()
+
+    donations = []
+
+    for donation in donation_objects:
+        a = donation.__dict__
+        if '_sa_instance_state' in a:
+            a.pop('_sa_instance_state')
+        donations.append(a)
+
+    return jsonify(donations = donations)
+
+
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point
     # that we invoke the DebugToolbarExtension
