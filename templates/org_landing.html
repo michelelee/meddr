@@ -12,17 +12,20 @@
 <h3>Reach out to connect to your donors</h3>
 
 <button type="button" id="onclick">Text all donors</button>
+<div id="dialog" title="Message to Donors">
 
 <form method="post" action="message_input">
-	<label>
-		<input type="text" name="message">
+	<label>Write a message to your donors (limit to 400 characters)
+		<input type="text" name="message" maxlength="400">
 	</label>
+	<input type="submit" class="btn btn-primary btn-lg" value="Submit">
 </form>
 
+</div>
 <script type="text/javascript">
-	
-	$("#onclick").click(function() {
-		$("#writemessage").css("display", "block");
-	});
+$("#dialog").dialog({ autoOpen: false});
+$("#opener").click(function() {
+	$("#dialog").dialog("open");
+});
 </script>
 {% endblock %}
