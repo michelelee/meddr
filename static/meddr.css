@@ -1,9 +1,9 @@
-
-
-div.header {
-  font-size: 150px;
+body {
+	background-image: url(/static/pills.jpg);
+    background-attachment: fixed;
+    background-position: center;
+	background-repeat: no-repeat;
 }
-
 
 div.stars {
   width: 270px;

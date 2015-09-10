@@ -56,7 +56,7 @@ def login_form():
 
 @app.route('/login', methods=['POST'])
 def login_process():
-    """Process login."""
+    """Processes login."""
 
     meddr_username = request.form["meddr_username_input"]
     password = request.form["password_input"]
