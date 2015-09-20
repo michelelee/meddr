@@ -1,8 +1,8 @@
 body {
-	background-image: url(/static/pills.jpg);
-    background-attachment: fixed;
-    background-position: center;
-	background-repeat: no-repeat;
+	background: url(/static/pills.jpg);
+	background-position: top;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 div.stars {
