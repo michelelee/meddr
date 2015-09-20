@@ -12,6 +12,7 @@ openfda_api_key = keys[0]
 
 
 def search_openfda_by_spl_id(spl_set_id):
+    """Second API call to OpenFDA to save the drug into the database"""
     
     r = requests.get('https://api.fda.gov/drug/label.json?api_key=%s&search=set_id:%s&limit=100' % (openfda_api_key, spl_set_id)).json()
     print 'https://api.fda.gov/drug/label.json?api_key=%s&search=set_id:%s&limit=100' % (openfda_api_key, spl_set_id)

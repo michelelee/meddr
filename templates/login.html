@@ -1,18 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<form action="/login" method="post">
-    <label>meddr. username: 
-        <input type="text" name="meddr_username_input">
+<form action="/login" method="post" class="form-inline">
+    <label>username: 
+        <input type="text" name="meddr_username_input" class="form control">
     </label><br>
-    <!-- <label>password: -->
-        <!-- <input type="password" name="password_input"> -->
     <label>password:
-               <input type="password" name="password_input" required class="form-control">
+               <input type="password" name="password_input" class="form control">
            </label>
 
     </label><br>
         <input type="submit">
 </form>
+
 
 {% endblock %}
