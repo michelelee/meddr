@@ -128,7 +128,7 @@ def search():
 @app.route("/rate_drug", methods=['POST', 'GET'])
 def get_result():
     """Show info about drug.
-    If a user is logged in, we will let them add drug feedbadk."""
+    If a user is logged in, we will let them add drug feedbadk. Get for displaying current drug info, post for adding new drugs"""
 
     spl_set_id = request.values["spl_set_id"]
 
